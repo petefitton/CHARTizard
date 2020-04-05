@@ -1,0 +1,220 @@
+<script>
+
+  let typeColors = {
+    "bug": "#336600",
+    "dark": "#1a001a",
+    "dragon": "#4775d1",
+    "elecric": "#ffcc00",
+    "fairy": "#ff66ff",
+    "fighting": "#cc5200",
+    "fire": "#cc3300",
+    "flying": "#6699cc",
+    "ghost": "#660066",
+    "grass": "#00cc00",
+    "ground": "#604020",
+    "ice": "#ccffff",
+    "normal": "#b3b3b3",
+    "poison": "#cc00ff",
+    "psychic": "#ffff4d",
+    "rock": "#404040",
+    "steel": "#9494b8",
+    "water": "#3366cc",
+    "": "type1"
+  }
+
+
+
+
+
+
+  // set the dimensions and margins of the graph
+  var margin = {top: 20, right: 20, bottom: 30, left: 50},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+  // set the ranges
+  var x = d3.scaleLinear().range([0, width]);
+  var y = d3.scaleLinear().range([height, 0]);
+  
+
+  // append the svg obgect to the body of the page
+  // appends a 'group' element to 'svg'
+  // moves the 'group' element to the top left margin
+  var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+  
+  // Get the data
+  d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
+  
+    // format the data
+    data.forEach(function(d) {
+        d.capture_rate = +d.capture_rate;
+        d.base_total = +d.base_total;
+    });
+  
+    // Scale the range of the data
+    x.domain([0, d3.max(data, function(d) { return d.capture_rate; }) + 5]);
+    y.domain([d3.min(data, function(d) { return d.base_total; }) - 10, d3.max(data, function(d) { return d.base_total; }) + 20]);
+    
+    // create defs and linear gradient definition/stop definitions
+    var defs = svg.append("defs")
+    for (type1 in typeColors) {
+      for (type2 in typeColors) {
+        var linGrad = defs.append("linearGradient")
+          .attr("id", type1 + type2)
+          .attr("x1", 0)
+          .attr("x2", 1)
+          .attr("y1", 0)
+          .attr("y2", 1)
+
+        linGrad.append("stop")
+          .attr("offset", "0%")
+          .attr("stop-color", typeColors[type1])
+        
+        linGrad.append("stop")
+          .attr("offset", "100%")
+          .attr("stop-color", typeColors[type2])
+      }
+    }
+        
+    // Add the scatterplot
+    svg.selectAll("dot")
+        .data(data)
+      .enter().append("circle")
+        .attr("r", 5)
+        .attr("cx", function(d) { return x(d.capture_rate); })
+        .attr("cy", function(d) { return y(d.base_total); })
+        .attr("fill", function(d) {
+          // var colors = "url(#" + d.type1 + d.type2 + ")"
+          // console.log(colors)
+          return "url(#" + d.type1 + d.type2 + ")"
+        })
+
+
+          // if (d.type1 == "bug") {
+          //   return typeColors["bug"];
+          // } else if (d.type1 == "dark") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "dragon") {
+          //   return "url(#{d.type1 + d.type2})";
+          // } else if (d.type1 == "electric") {
+          //   return "url(#{d.type1 + d.type2})";
+          // } else if (d.type1 == "fairy") {
+          //   return "url(#{d.type1 + d.type2})";
+          // } else if (d.type1 == "fighting") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   return id;
+          // } else if (d.type1 == "fire") {
+          //   return "url(#" + d.type1 + d.type2 + ")"
+          //   // return id;
+          // } else if (d.type1 == "flying") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "ghost") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "grass") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "ground") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "ice") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "normal") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "poison") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "psychic") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "rock") {
+          //   id = "url(#" + d.type1 + d.type2 + ")"
+          //   console.log(id)
+          //   return id;
+          // } else if (d.type1 == "steel") {
+          //   // I know for a steel=type1 pokemon that I want first gradient to be
+          //   return "url(#Gradient2)";
+          // } else if (d.type1 == "water") {
+          //   return "url(#Gradient2)";
+          // } else {
+          //   console.log("hit the else that I shouldn't hit")
+          //   return "#777";
+          // }})
+          // <path d="M115,115 L115,5 A110,110 1 0,1 190,35 z"></path>
+    // svg.selectAll("dot")
+    //     .data(data)
+    //   .enter().append("path")
+    //     .attr("d", "M115,115 L115,5 A110,110 1 0,1 190,35 z")
+    //     .attr("cx", function(d) { return x(d.capture_rate); })
+    //     .attr("cy", function(d) { return y(d.base_total); })
+    //     .attr("fill", function(d){
+    //       if (d.type1 == "bug") {
+    //         return typeColors["bug"];
+    //       } else if (d.type1 == "dark") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "dragon") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "electric") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "fairy") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "fighting") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "fire") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "flying") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "ghost") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "grass") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "ground") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "ice") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "normal") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "poison") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "psychic") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "rock") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "steel") {
+    //         return "#32CD32";
+    //       } else if (d.type1 == "water") {
+    //         return "#32CD32";
+    //       } else {
+    //         return "#777";
+    //       }})
+  
+    // Add the X Axis
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+  
+    // Add the Y Axis
+    svg.append("g")
+        .call(d3.axisLeft(y));
+  
+  });
+  
+</script>
