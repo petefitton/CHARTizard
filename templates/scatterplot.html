@@ -46,6 +46,9 @@ svg.append('text')
 // Get the data and process data within a large function
 d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
 
+	// Test filtering data (remove all pokemon from data that have capture_rate === 120)
+	// data = data.filter(function(d){ return d.capture_rate != "120" })
+
 	// format data
 	data.forEach(function(d) {
 		d.capture_rate = +d.capture_rate;

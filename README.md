@@ -6,6 +6,7 @@
 -Resizing Window DOM Manipulation: https://developer.mozilla.org/en-US/docs/Web/API/Window/resize_event
 -Regression Line: https://observablehq.com/@hydrosquall/simple-linear-regression-scatterplot-with-d3
 -Regression Line(first worked from this link but mostly unused): https://bl.ocks.org/ctufts/298bfe4b11989960eeeecc9394e9f118
+-Data Filtering in D3: https://www.d3-graph-gallery.com/graph/basic_datamanipulation.html
 
 ## Chartizard Pitch
 ----
@@ -17,10 +18,10 @@ Single page website that displays beautiful, interactive charts concerning Pokem
 
 ### Wireframes
 
-![Wireframe](/img/wireframe.pdf)
+![Wireframe](/img/wireframe.jpg)
 
 ### Planning
-![Planning PDF](/img/planning.pdf)
+![Planning PDF](/img/planning.jpg)
 
 
 ### Proposed Architecture
