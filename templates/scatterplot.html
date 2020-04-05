@@ -24,7 +24,7 @@ let typeColors = {
 
 // set dimensions and margins of scatterplot
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
-	width = 960 - margin.left - margin.right,
+	width = window.innerWidth - margin.left - margin.right - 30,
 	height = 500 - margin.top - margin.bottom;
 
 // set the ranges of x and y axes
@@ -32,12 +32,14 @@ var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
 // svg create and setup + group element create/append that sets area to start in the corner with margins applied
-var svg = d3.select("body").append("svg")
+var svg = d3.select(".scatterContainer").append("svg")
 	.attr("width", width + margin.left + margin.right)
 	.attr("height", height + margin.top + margin.bottom)
+	.attr("color", "red")
+	.attr("style", "background-color: lightgray")
 .append("g")
 	.attr("transform",
-				"translate(" + margin.left + "," + margin.top + ")");
+		  "translate(" + margin.left + "," + margin.top + ")");
 
 // Get the data and process data within a large function
 d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
