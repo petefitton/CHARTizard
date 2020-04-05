@@ -1,59 +1,5 @@
 <script>
 
-// credit for this function goes to: https://brendansudol.com/writing/responsive-d3
-// with slight changes
-// function makes SVG responsive to window dimensions
-// function responsivefy(svg) {
-// 	// scatterDiv is the parent node of scatterplot SVG
-// 	// set the container's width & height equal to the SVG width & height
-//     var scatterContainer = d3.select(".scatterDiv"),
-//         width = parseInt(svg.style("width")),
-//         height = parseInt(svg.style("height")),
-//         aspect = width / height;
-
-// 	// assign values for viewBox and preserveAspectRatio properties
-//     // call resize so that svg resizes on inital page load
-//     svg.attr("viewBox", "0 0 " + width + " " + height)
-//         .attr("perserveAspectRatio", "xMinYMid")
-//         .call(resize);
-
-//     // to register multiple listeners for same event type, 
-//     // you need to add namespace, i.e., 'click.foo'
-//     // necessary if you call invoke this function for multiple svgs
-//     // api docs: https://github.com/mbostock/d3/wiki/Selections#on
-//     // d3.select(window).on("resize." + scatterContainer.attr("id"), resize);
-// 	// window.onresize = resize;
-// 	window.addEventListener('resize', resize);
-//     // get width of scatterContainer and resize svg to fit it
-//     function resize() {
-//         var targetWidth = parseInt(scatterContainer.style("width"));
-//         svg.attr("width", targetWidth);
-//         svg.attr("height", Math.round(targetWidth / aspect));
-//     }
-// }
-
-let typeColors = {
-	"bug": "#336600",
-	"dark": "#1a001a",
-	"dragon": "#4775d1",
-	"elecric": "#ffcc00",
-	"fairy": "#ff66ff",
-	"fighting": "#cc5200",
-	"fire": "#cc3300",
-	"flying": "#6699cc",
-	"ghost": "#660066",
-	"grass": "#00cc00",
-	"ground": "#604020",
-	"ice": "#ccffff",
-	"normal": "#b3b3b3",
-	"poison": "#cc00ff",
-	"psychic": "#ffff4d",
-	"rock": "#404040",
-	"steel": "#9494b8",
-	"water": "#3366cc",
-	"": "type1"
-}
-
 // set dimensions and margins of scatterplot
 var margin = {top: 40, right: 50, bottom: 60, left: 65},
 	width = window.innerWidth - margin.left - margin.right - 30,

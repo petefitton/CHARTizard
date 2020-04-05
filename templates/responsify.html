@@ -1,13 +1,11 @@
 <script>
 
 // credit for this function goes to: https://brendansudol.com/writing/responsive-d3
-// with slight changes
-// function makes SVG responsive to window dimensions
+// function makes charts responsive to window dimensions/resizing
 function responsivefy(svg) {
     
-	// scatterDiv is the parent node of scatterplot SVG
 	// set the container's width & height equal to the SVG width & height
-    var scatterContainer = d3.select(svg.node().parentNode),
+    var container = d3.select(svg.node().parentNode),
         width = parseInt(svg.style("width")),
         height = parseInt(svg.style("height")),
         aspect = width / height;
@@ -20,9 +18,9 @@ function responsivefy(svg) {
 
     window.addEventListener('resize', resize);
     
-    // get width of scatterContainer and resize svg to fit it
+    // resize svg according to the size of the container
     function resize() {
-        var targetWidth = parseInt(scatterContainer.style("width"));
+        var targetWidth = parseInt(container.style("width"));
         svg.attr("width", targetWidth);
         svg.attr("height", Math.round(targetWidth / aspect));
     }
