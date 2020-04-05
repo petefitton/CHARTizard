@@ -1,3 +1,8 @@
+# Sources
+-Scatterplot Tutorial: https://bl.ocks.org/d3noob/a44d21b304b9f7260a284b1883232002
+-Making D3 responsive: https://brendansudol.com/writing/responsive-d3
+-General SVG scaling knowledge: https://css-tricks.com/scale-svg/
+
 ## Chartizard Pitch
 ----
 ### Elevator Pitch
@@ -8,10 +13,10 @@ Single page website that displays beautiful, interactive charts concerning Pokem
 
 ### Wireframes
 
-![Wireframe](./img/wireframe.pdf)
+![Wireframe](/img/wireframe.pdf)
 
 ### Planning
-![Planning PDF](./img/planning.pdf)
+![Planning PDF](/img/planning.pdf)
 
 
 ### Proposed Architecture

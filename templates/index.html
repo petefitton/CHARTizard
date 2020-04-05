@@ -9,14 +9,22 @@
 </head>
 <body>
 	<h1>CHARTizard</h1>
-	<div class="scatterContainer"></div>
+	<!-- <p>Resize the browser window to fire the <code>resize</code> event.</p>
+	<p>Window height: <span id="height"></span></p>
+	<p>Window width: <span id="width"></span></p> -->
+	<div class="scatterDiv"></div>
+	<div class="scatterDiv2"></div>
     <!-- <p>{{data.name[0]}}</p>
     <p>{{data.capture_rate[0]}}</p>
     <p>{{data.base_total[0]}}</p>
     <p>{{dat.name[0]}}</p>
-    <p>{{dat.base_total[0]}}</p> -->
+	<p>{{dat.base_total[0]}}</p> -->
+	
+	{% include "responsify.html" %}
     
-    {% include "scatterplot.html" %}
+	{% include "scatterplot.html" %}
+	
+    {% include "scatterplot2.html" %}
 
 
 

@@ -1,5 +1,37 @@
 <script>
 
+// credit for this function goes to: https://brendansudol.com/writing/responsive-d3
+// with slight changes
+// function makes SVG responsive to window dimensions
+// function responsivefy(svg) {
+// 	// scatterDiv is the parent node of scatterplot SVG
+// 	// set the container's width & height equal to the SVG width & height
+//     var scatterContainer = d3.select(".scatterDiv"),
+//         width = parseInt(svg.style("width")),
+//         height = parseInt(svg.style("height")),
+//         aspect = width / height;
+
+// 	// assign values for viewBox and preserveAspectRatio properties
+//     // call resize so that svg resizes on inital page load
+//     svg.attr("viewBox", "0 0 " + width + " " + height)
+//         .attr("perserveAspectRatio", "xMinYMid")
+//         .call(resize);
+
+//     // to register multiple listeners for same event type, 
+//     // you need to add namespace, i.e., 'click.foo'
+//     // necessary if you call invoke this function for multiple svgs
+//     // api docs: https://github.com/mbostock/d3/wiki/Selections#on
+//     // d3.select(window).on("resize." + scatterContainer.attr("id"), resize);
+// 	// window.onresize = resize;
+// 	window.addEventListener('resize', resize);
+//     // get width of scatterContainer and resize svg to fit it
+//     function resize() {
+//         var targetWidth = parseInt(scatterContainer.style("width"));
+//         svg.attr("width", targetWidth);
+//         svg.attr("height", Math.round(targetWidth / aspect));
+//     }
+// }
+
 let typeColors = {
 	"bug": "#336600",
 	"dark": "#1a001a",
@@ -23,23 +55,47 @@ let typeColors = {
 }
 
 // set dimensions and margins of scatterplot
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
+var margin = {top: 40, right: 50, bottom: 60, left: 65},
 	width = window.innerWidth - margin.left - margin.right - 30,
-	height = 500 - margin.top - margin.bottom;
+	height = 600 - margin.top - margin.bottom;
 
 // set the ranges of x and y axes
 var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
 // svg create and setup + group element create/append that sets area to start in the corner with margins applied
-var svg = d3.select(".scatterContainer").append("svg")
+var svg = d3.select(".scatterDiv").append("svg")
 	.attr("width", width + margin.left + margin.right)
 	.attr("height", height + margin.top + margin.bottom)
 	.attr("color", "red")
 	.attr("style", "background-color: lightgray")
+	.call(responsivefy)
 .append("g")
 	.attr("transform",
 		  "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append('text')
+	.attr('x', width / 2)
+	.attr('y', -10)
+	.style('font-size', 30)
+	.style('text-anchor', 'middle')
+	.text('Pokemon Stats Compared')
+
+svg.append('text')
+	.attr("transform", "rotate(-90)")
+	.attr('x', -height / 2)
+	.attr('y', -margin.left / 1.5)
+	.style('font-size', 20)
+	.style('text-anchor', 'middle')
+	.text('Total base stats')
+
+svg.append('text')
+	.attr('x', width / 2)
+	.attr('y', height + margin.bottom / 1.5)
+	.style('font-size', 20)
+	.style('text-anchor', 'middle')
+	.text('Capture rate')
+
 
 // Get the data and process data within a large function
 d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
