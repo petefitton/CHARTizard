@@ -11,7 +11,7 @@ import pandas as pd
 # from collections import Counter
 
 def export(data):
-  poke = pd.read_csv(data)
-  pfilt = poke.filter(items=["name", "capture_rate", "base_total", "type1", "type2"])
-  return pfilt
+    poke = pd.read_csv(data)
+    pfilt = poke.filter(items=["name", "capture_rate", "base_total", "type1", "type2"])
+    return pfilt
 

@@ -11,4 +11,4 @@ data_file = './static/data/pokemon.csv'
 
 @app.route('/')
 def index():
-  return render_template('index.html', data=analysis.export(data_file), dat=analysis2.export(data_file))
+    return render_template('index.html', data=analysis.export(data_file), dat=analysis2.export(data_file))
