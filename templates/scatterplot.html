@@ -97,5 +97,41 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	svg.append("g")
 		.call(d3.axisLeft(y));
 
+	linearRegression = ss.linearRegression(data.map(d => [d.capture_rate, d.base_total]))
+
+	linearRegressionLine = ss.linearRegressionLine(linearRegression)
+
+	const firstX = d3.min(data, function(d) { return d.capture_rate; });
+	const lastX = d3.max(data, function(d) { return d.capture_rate; });
+	const xCoordinates = [firstX, lastX];
+	
+	let regressionPoints = xCoordinates.map(d => ({
+		x: d,                         // We pick x and y arbitrarily, just make sure they match d3.line accessors
+		y: linearRegressionLine(d)
+	}));
+
+	// xScale = d3.scaleLinear()
+    //        .domain([0, d3.max(data, d => d.capture_rate)])
+    //        .range([margin.left, width - margin.right])
+
+	// yScale = d3.scaleLinear()
+    //        .domain([0, d3.max(data, d => d.base_total)]) // added a bit of breathing room (20,000)
+	// 	   .range([height - margin.bottom, margin.top])
+		   
+	line = d3.line()
+		.x(d => x(d.x))
+		.y(d => y(d.y))
+
+	// var lineGenerator = d3.line();
+	// var pathString = line(data);
+
+	// d3.select('path')
+	// 	.attr('d', pathString);
+
+	svg.append('path')
+		.classed('regressionLine', true)
+		.datum(regressionPoints)
+		.attr('d', line);
+	
 });
 </script>
