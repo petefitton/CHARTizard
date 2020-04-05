@@ -8,9 +8,3 @@ h1 {
     stroke: steelblue;
     stroke-width: 2px;
 }
-
-.regressionLine {
-    stroke: rgb(253, 251, 142);
-    fill: none;
-    stroke-width: 2;
-}

@@ -4,7 +4,8 @@
 -Making D3 responsive: https://brendansudol.com/writing/responsive-d3
 -General SVG scaling knowledge: https://css-tricks.com/scale-svg/
 -Resizing Window DOM Manipulation: https://developer.mozilla.org/en-US/docs/Web/API/Window/resize_event
--Regression Line: https://bl.ocks.org/ctufts/298bfe4b11989960eeeecc9394e9f118
+-Regression Line: https://observablehq.com/@hydrosquall/simple-linear-regression-scatterplot-with-d3
+-Regression Line(first worked from this link but mostly unused): https://bl.ocks.org/ctufts/298bfe4b11989960eeeecc9394e9f118
 
 ## Chartizard Pitch
 ----
