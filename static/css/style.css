@@ -1,5 +1,10 @@
+html {
+    background-color: lightgray;
+}
+
 h1 {
-    color: chartreuse
+    color: deeppink;
+    text-align: center;
 }
 
 /* .line is used for test2 */
