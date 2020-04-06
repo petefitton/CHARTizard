@@ -42,6 +42,13 @@ svg.append('text')
 	.style('text-anchor', 'middle')
 	.text('Capture rate')
 
+let scatterplotTooltip = d3.select('.scatterDiv').append('div')
+	.attr('class', 'scatterplotTooltip')
+	.style("position", "absolute")
+	.style("opacity", 0)
+	.style("border", "1px solid black")
+	.style("padding", "5px")
+	.style("background-color", "white");
 
 // Get the data and process data within a large function
 d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
@@ -79,11 +86,40 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 				.attr("stop-color", typeColors[type2])
 		}
 	}
-			
+
+	let hide = function() {scatterplotTooltip.style("display", "none")}
+	let hideHandler
 	// Add all dots for the scatterplot
 	svg.selectAll("dot")
 		.data(data)
 	.enter().append("circle")
+		.on("mouseover", function(d, i) { // show it and update html
+			if (hideHandler) {
+				clearTimeout(hideHandler)
+			}
+
+			let html = "<span class='tooltiptext'>" + "<b>" + d.name + "</b>" + "<br/>" + "Capture Rate: " + d.capture_rate + "<br/>" + "Base Total: " + d.base_total
+
+			scatterplotTooltip.style("display", "block").html(html)
+				.transition()
+				.duration(500)
+				.style("opacity", .9);
+		})
+		.on("mousemove", function(d, i) {
+			let tempHeight = d3.select(".scatterplotTooltip").node().getBoundingClientRect().height
+			let tempWidth = d3.select(".scatterplotTooltip").node().getBoundingClientRect().width
+			
+			scatterplotTooltip
+				.style("left", (d3.event.pageX - (tempWidth / 2) - 0.5) + "px")
+				.style("top", (d3.event.pageY - tempHeight - 12) + "px");
+		})
+		.on("mouseout", function(d, i) {
+			scatterplotTooltip.transition()
+				.duration(500)
+				.style("opacity", 0)
+
+			hideHandler = setTimeout(hide, 550)
+		})
 		.attr("r", 5)
 		.attr("cx", function(d) { return x(d.capture_rate); })
 		.attr("cy", function(d) { return y(d.base_total); })

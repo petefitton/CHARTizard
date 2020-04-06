@@ -8,6 +8,11 @@
 -Regression Line(first worked from this link but mostly unused): https://bl.ocks.org/ctufts/298bfe4b11989960eeeecc9394e9f118
 -Data Filtering in D3: https://www.d3-graph-gallery.com/graph/basic_datamanipulation.html
 -Type Color for Pokemon: https://bulbapedia.bulbagarden.net/wiki/Category:Type_color_templates
+-Tooltip: https://stackoverflow.com/questions/29357160/add-tooltip-to-d3-scatter-plot
+-Tooltip arrow: https://www.w3schools.com/css/css_tooltip.asp
+-Tooltip Example: http://bl.ocks.org/williaster/af5b855651ffe29bdca1
+-Tooltip Simple Example: https://bl.ocks.org/mbostock/1087001
+-getBoundingClientRent Method: https://stackoverflow.com/questions/21990857/d3-js-how-to-get-the-computed-width-and-height-for-an-arbitrary-element
 
 
 ## Chartizard Pitch
