@@ -14,7 +14,7 @@ var svg = d3.select(".scatterDiv").append("svg")
 	.attr("width", width + margin.left + margin.right)
 	.attr("height", height + margin.top + margin.bottom)
 	.attr("color", "red")
-	.attr("style", "background-color: white")
+	.attr("style", "background-color: #ececec")
 	.call(responsivefy)
 .append("g")
 	.attr("transform",
@@ -53,6 +53,7 @@ let scatterplotTooltip = d3.select('.scatterDiv').append('div')
 // Get the data and process data within a large function
 d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
 
+	// console.log(data.filter(function(d){ return d.name === "Type: Null"}))
 	// Test filtering data (remove all pokemon from data that have capture_rate === 120)
 	// data = data.filter(function(d){ return d.capture_rate != "120" })
 
@@ -124,6 +125,9 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		.attr("cx", function(d) { return x(d.capture_rate); })
 		.attr("cy", function(d) { return y(d.base_total); })
 		.attr("fill", function(d) {
+			if (d.type2 === "") {
+				return typeColors[d.type1]
+			}
 			return "url(#" + d.type1 + d.type2 + ")"
 		})
 
