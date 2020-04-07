@@ -13,6 +13,13 @@
 -Tooltip Example: http://bl.ocks.org/williaster/af5b855651ffe29bdca1
 -Tooltip Simple Example: https://bl.ocks.org/mbostock/1087001
 -getBoundingClientRent Method: https://stackoverflow.com/questions/21990857/d3-js-how-to-get-the-computed-width-and-height-for-an-arbitrary-element
+-Dropdown: https://stackoverflow.com/questions/39964570/how-to-filter-data-with-d3-js
+-Dropdown Simple Example: http://plnkr.co/edit/HwzD4SpROPyjsW0REkfJ?p=preview&preview
+-Enter, Exit, Update, and Join Explained: https://www.d3indepth.com/enterexit/
+-Selection Explained: https://bost.ocks.org/mike/selection/
+-Enter, Exit, and Update Example: https://bl.ocks.org/NGuernse/9e4b5232394d853bd76d94bde102fa9c
+-Enter, Exit, and Update Example: http://bl.ocks.org/alansmithy/e984477a741bc56db5a5
+-Data Filtering with Enter, Exit, and Update: https://stackoverflow.com/questions/39964570/how-to-filter-data-with-d3-js
 
 
 ## Chartizard Pitch

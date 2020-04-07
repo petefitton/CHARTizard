@@ -26,5 +26,6 @@ h1 {
 }
 
 .scatterDiv {
-    margin-bottom: 50px
+    margin-bottom: 50px;
+    position: relative;
 }
