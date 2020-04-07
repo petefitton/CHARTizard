@@ -61,6 +61,29 @@ yDropdown.append('option')
 // Get the data and process data within a large function
 d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
 
+// -----------------------Initial setup--------------------------------//
+// Variable declarations and processing
+	// Format data
+	// y and x axis variable name declarations
+	// domain setup
+	// defs/linearGradients/stops for coloring dots
+	// hide/hidehandler
+// Function declarations
+	// y dropdown menu handler
+	// updateScatterY function declaration
+	// varNameFormat declaration with tuple xAxisVarFormatted, yAxisVarFormatted declarations
+	// enterDots declaration
+	// exitDots declaration
+// Run initialization/function calls
+	// enterDots()
+	// add x and y axes
+	// add x and y axes text
+// Regression Line - declarations for vars/functions and creation of line
+
+
+
+// -----------------------Variable declarations and processing--------------------------------//
+
 	// Test filtering data (remove all pokemon from data that have capture_rate === 120)
 	// data = data.filter(function(d){ return d.capture_rate != "120" })
 
@@ -80,28 +103,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	let xAxisVar = "height_m"
 	let yAxisVar = "base_total"
-
-	// handles y Variable dropdown menu change
-	yDropdown.on("change", function() {
-		console.log(this.value)
-		// e.target.value is the value of the seleted option tag
-		yAxisVar = this.value
-		console.log(yAxisVar)
-		// need to updateyAxisVar to be equal to e.target.value
-		// no filtering needed according to this dropdown menu set of options
-		// need function to exit all currently displayed dots
-		// function to enter all new dots to display
-		exitDots()
-		// function to update points that have entered
-		x.domain([0, d3.max(data, function(d) { return d[xAxisVar]; }) + 5]);
-		y.domain([d3.min(data, function(d) { return d[yAxisVar]; }) - 10, d3.max(data, function(d) { return d[yAxisVar]; }) + 20]);
-		// updatePoints(groupData);
-		enterDots(data)
-		// enterPoints(groupData);
-		// exitPoints(groupData);
-		// var group = e.target.value;
-		// var groupData = getFilteredData(data, group);
-	})
 
 	// Setup domain of data
 	x.domain([0, d3.max(data, function(d) { return d[xAxisVar]; }) + 5]);
@@ -132,16 +133,71 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	let hide = function() {scatterplotTooltip.style("display", "none")}
 	let hideHandler
 
-	// formatting x and y axis variables for displaying with Capitalized first letters and no underscores
-	let tempArrX = xAxisVar.split("_")
-	let xAxisVarFormatted = tempArrX[0].charAt(0).toUpperCase() + tempArrX[0].substring(1) + " " + tempArrX[1].charAt(0).toUpperCase() + tempArrX[1].substring(1)
-	let tempArrY = yAxisVar.split("_")
-	let yAxisVarFormatted
-	if (tempArrY.length > 1) {
-		yAxisVarFormatted = tempArrY[0].charAt(0).toUpperCase() + tempArrY[0].substring(1) + " " + tempArrY[1].charAt(0).toUpperCase() + tempArrY[1].substring(1)
-	} else {
-		yAxisVarFormatted = tempArrY[0].charAt(0).toUpperCase() + tempArrY[0].substring(1)
+
+// -----------------------Function declarations--------------------------------//
+
+
+	// handles y Variable dropdown menu change
+	yDropdown.on("change", function() {
+		yAxisVar = this.value
+		updateScatterY(yAxisVar)
+	})
+
+	function updateScatterY(yAxisVar) {
+		// console.log(this.value)
+		// e.target.value is the value of the seleted option tag
+		console.log(yAxisVar)
+		// need to updateyAxisVar to be equal to e.target.value
+		// no filtering needed according to this dropdown menu set of options
+		// need function to exit all currently displayed dots
+		// function to enter all new dots to display
+		exitDots()
+		svg.selectAll('text')
+			.data([])
+			.exit()
+			.remove()
+		// function to update points that have entered
+		x.domain([0, d3.max(data, function(d) { return d[xAxisVar]; }) + 5]);
+		y.domain([d3.min(data, function(d) { return d[yAxisVar]; }) - 10, d3.max(data, function(d) { return d[yAxisVar]; }) + 20]);
+		// updatePoints(groupData);
+		enterDots(data)
+		// enterPoints(groupData);
+		// exitPoints(groupData);
+		// var group = e.target.value;
+		// var groupData = getFilteredData(data, group);
+		let [xAxisVarFormatted, yAxisVarFormatted] = varNameFormat(xAxisVar, yAxisVar)
+		// console.log(yAxisVarFormatted)
+		svg.append('text')
+			.attr("transform", "rotate(-90)")
+			.attr('x', -height / 2)
+			.attr('y', -margin.left / 1.5)
+			.style('font-size', 20)
+			.style('text-anchor', 'middle')
+			.text(yAxisVarFormatted)
+
+		svg.append('text')
+			.attr('x', width / 2)
+			.attr('y', height + margin.bottom / 1.5)
+			.style('font-size', 20)
+			.style('text-anchor', 'middle')
+			.text(xAxisVarFormatted)
 	}
+
+	// formatting x and y axis variables for displaying with Capitalized first letters and no underscores
+	function varNameFormat(xAxisVar, yAxisVar) {
+		let tempArrX = xAxisVar.split("_")
+		let xAxisVarFormatted = tempArrX[0].charAt(0).toUpperCase() + tempArrX[0].substring(1) + " " + tempArrX[1].charAt(0).toUpperCase() + tempArrX[1].substring(1)
+		let tempArrY = yAxisVar.split("_")
+		let yAxisVarFormatted
+		if (tempArrY.length > 1) {
+			yAxisVarFormatted = tempArrY[0].charAt(0).toUpperCase() + tempArrY[0].substring(1) + " " + tempArrY[1].charAt(0).toUpperCase() + tempArrY[1].substring(1)
+			return [xAxisVarFormatted, yAxisVarFormatted]
+		} else {
+			yAxisVarFormatted = tempArrY[0].charAt(0).toUpperCase() + tempArrY[0].substring(1)
+			return [xAxisVarFormatted, yAxisVarFormatted]
+		}
+	}
+	let [xAxisVarFormatted, yAxisVarFormatted] =varNameFormat(xAxisVar, yAxisVar)
 
 	// Add all dots for the scatterplot
 	function enterDots(data) {
@@ -186,7 +242,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		})
 	}
 
-	enterDots(data)
 
 	function exitDots() {
 		svg.selectAll("circle")
@@ -195,6 +250,13 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.remove();
 	}
 
+
+
+// -------------------Run initializations/Function calls------------------------//
+
+
+
+	enterDots(data)
 
 	// Add x Axis
 	svg.append("g")
@@ -205,7 +267,25 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	svg.append("g")
 		.call(d3.axisLeft(y));
 
-	// Regression line
+	// y Axis Text
+	svg.append('text')
+		.attr("transform", "rotate(-90)")
+		.attr('x', -height / 2)
+		.attr('y', -margin.left / 1.5)
+		.style('font-size', 20)
+		.style('text-anchor', 'middle')
+		.text(yAxisVarFormatted)
+
+	// x Axis Text
+	svg.append('text')
+		.attr('x', width / 2)
+		.attr('y', height + margin.bottom / 1.5)
+		.style('font-size', 20)
+		.style('text-anchor', 'middle')
+		.text(xAxisVarFormatted)
+
+//---------------------Regression line-------------------//
+
 	linearRegression = ss.linearRegression(data.map(d => [d[xAxisVar], d[yAxisVar]]))
 
 	linearRegressionLine = ss.linearRegressionLine(linearRegression)
@@ -231,19 +311,5 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		.attr('stroke', 'rgb(253, 251, 142)')
 		.attr('stroke-width', 2);
 
-	svg.append('text')
-		.attr("transform", "rotate(-90)")
-		.attr('x', -height / 2)
-		.attr('y', -margin.left / 1.5)
-		.style('font-size', 20)
-		.style('text-anchor', 'middle')
-		.text(yAxisVarFormatted)
-
-	svg.append('text')
-		.attr('x', width / 2)
-		.attr('y', height + margin.bottom / 1.5)
-		.style('font-size', 20)
-		.style('text-anchor', 'middle')
-		.text(xAxisVarFormatted)
 });
 </script>
