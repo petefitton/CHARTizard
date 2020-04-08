@@ -20,6 +20,9 @@
 -Enter, Exit, and Update Example: https://bl.ocks.org/NGuernse/9e4b5232394d853bd76d94bde102fa9c
 -Enter, Exit, and Update Example: http://bl.ocks.org/alansmithy/e984477a741bc56db5a5
 -Data Filtering with Enter, Exit, and Update: https://stackoverflow.com/questions/39964570/how-to-filter-data-with-d3-js
+-JS Array Destructuring/Tuple Usage: https://stackoverflow.com/questions/4512405/javascript-variable-assignments-from-tuples
+-Blur for better UX with Dropdown Menus in conjunction with tooltips: https://stackoverflow.com/questions/16779247/how-to-force-to-lose-focus-of-all-fields-in-a-form-in-jquery
+
 
 
 ## Chartizard Pitch

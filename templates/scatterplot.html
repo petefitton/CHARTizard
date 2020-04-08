@@ -1,7 +1,7 @@
 <script>
 
 // set/calculate variables for dimensions and margins of scatterplot
-var margin = {top: 40, right: 50, bottom: 60, left: 65},
+var margin = {top: 60, right: 50, bottom: 60, left: 65},
 	width = window.innerWidth - margin.left - margin.right - 30,
 	height = 600 - margin.top - margin.bottom;
 
@@ -9,8 +9,8 @@ var margin = {top: 40, right: 50, bottom: 60, left: 65},
 var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
-// svg create and setup + group element create/append that sets area to start in the corner with margins applied
-var svg = d3.select(".scatterDiv").append("svg")
+// scatterSvg create and setup + group element create/append that sets area to start in the corner with margins applied
+var scatterSvg = d3.select(".scatterDiv").append("svg")
 	.attr("width", width + margin.left + margin.right)
 	.attr("height", height + margin.top + margin.bottom)
 	.attr("color", "red")
@@ -20,7 +20,7 @@ var svg = d3.select(".scatterDiv").append("svg")
 	.attr("transform",
 		  "translate(" + margin.left + "," + margin.top + ")");
 
-svg.append('text')
+scatterSvg.append('text')
 	.attr('x', width / 2)
 	.attr('y', -10)
 	.style('font-size', 30)
@@ -34,7 +34,9 @@ let scatterplotTooltip = d3.select('.scatterDiv').append('div')
 	.style("border", "1px solid black")
 	.style("padding", "5px")
 	.style("background-color", "white")
-	.style("cursor", "default");
+	.style("cursor", "default")
+	.style("top", "0px")
+	.style("left", "50%")
 
 let yDropdownLabel = d3.select('.scatterDiv').append('label')
 	.text("Y Variable")
@@ -55,8 +57,47 @@ yDropdown.append('option')
 	.attr("value", "attack")
 
 yDropdown.append('option')
+	.text("defense")
+	.attr("value", "defense")
+
+yDropdown.append('option')
 	.text("hp")
 	.attr("value", "hp")
+
+yDropdown.append('option')
+	.text("sp_attack")
+	.attr("value", "sp_attack")
+
+yDropdown.append('option')
+	.text("sp_defense")
+	.attr("value", "sp_defense")
+
+yDropdown.append('option')
+	.text("speed")
+	.attr("value", "speed")
+
+let xDropdownLabel = d3.select('.scatterDiv').append('label')
+	.text("X Variable")
+	.style("position", "absolute")
+	.style("right", (margin.right * 3) + "px")
+	.style("top", (margin.top / 2) + "px")
+
+let xDropdown = xDropdownLabel.append('select')
+	.attr("class", "xDropdown")
+	.style("display", "block")
+
+xDropdown.append('option')
+	.text("capture_rate")
+	.attr("value", "capture_rate")
+
+xDropdown.append('option')
+	.text("weight_kg")
+	.attr("value", "weight_kg")
+
+xDropdown.append('option')
+	.text("height_m")
+	.attr("value", "height_m")
+
 
 // Get the data and process data within a large function
 d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
@@ -101,15 +142,17 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		d.weight_kg = +d.weight_kg;
 	});
 
-	let xAxisVar = "height_m"
+	let xAxisVar = "capture_rate"
 	let yAxisVar = "base_total"
 
+	let xAxis
+	let yAxis
 	// Setup domain of data
-	x.domain([0, d3.max(data, function(d) { return d[xAxisVar]; }) + 5]);
-	y.domain([d3.min(data, function(d) { return d[yAxisVar]; }) - 10, d3.max(data, function(d) { return d[yAxisVar]; }) + 20]);
+	// x.domain([0, d3.max(data, function(d) { return d[xAxisVar]; }) + 5]);
+	// y.domain([d3.min(data, function(d) { return d[yAxisVar]; }) - 10, d3.max(data, function(d) { return d[yAxisVar]; }) + 20]);
 	
 	// create defs, linear gradient, and stop elements with appropriate settings
-	var defs = svg.append("defs")
+	var defs = scatterSvg.append("defs")
 	for (type1 in typeColors) {
 		for (type2 in typeColors) {
 			var linGrad = defs.append("linearGradient")
@@ -139,35 +182,72 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	// handles y Variable dropdown menu change
 	yDropdown.on("change", function() {
+		// update yAxisVar's value
+		let el = document.querySelector( ':focus' )
+		if( el ) el.blur()
 		yAxisVar = this.value
-		updateScatterY(yAxisVar)
+		updateScatterY(xAxisVar, yAxisVar)
 	})
 
-	function updateScatterY(yAxisVar) {
-		// console.log(this.value)
-		// e.target.value is the value of the seleted option tag
-		console.log(yAxisVar)
-		// need to updateyAxisVar to be equal to e.target.value
+	// handles x Variable dropdown menu change
+	xDropdown.on("change", function() {
+		// update yAxisVar's value
+		let el = document.querySelector( ':focus' )
+		if( el ) el.blur()
+		xAxisVar = this.value
+		updateScatterY(xAxisVar, yAxisVar)
+	})
+
+	function updateScatterY(xAxisVar, yAxisVar) {
 		// no filtering needed according to this dropdown menu set of options
-		// need function to exit all currently displayed dots
-		// function to enter all new dots to display
+
+		// remove all information that could be changed
 		exitDots()
-		svg.selectAll('text')
+		scatterSvg.selectAll('text')
 			.data([])
 			.exit()
 			.remove()
-		// function to update points that have entered
+		
+		scatterSvg.select('.regressionLine')
+			.data([])
+			.exit()
+			.remove()
+
+		if (xAxis) {
+			xAxis.data([]).exit().remove()
+		}
+
+		if (yAxis) {
+			yAxis.data([]).exit().remove()
+		}
+		// reset domain
 		x.domain([0, d3.max(data, function(d) { return d[xAxisVar]; }) + 5]);
 		y.domain([d3.min(data, function(d) { return d[yAxisVar]; }) - 10, d3.max(data, function(d) { return d[yAxisVar]; }) + 20]);
+
+		//Keeping these comments for now
 		// updatePoints(groupData);
-		enterDots(data)
 		// enterPoints(groupData);
 		// exitPoints(groupData);
 		// var group = e.target.value;
 		// var groupData = getFilteredData(data, group);
+//TOOLTIP reset
+//axes numbers create (removal if necessary too)
+		// format x and y axes for display in tooltips and axes
 		let [xAxisVarFormatted, yAxisVarFormatted] = varNameFormat(xAxisVar, yAxisVar)
-		// console.log(yAxisVarFormatted)
-		svg.append('text')
+
+		// create all new dots with correct location
+		enterDots(data, xAxisVarFormatted, yAxisVarFormatted)
+
+		// Add x Axis
+		xAxis = scatterSvg.append("g")
+			.attr("transform", "translate(0," + height + ")")
+			.call(d3.axisBottom(x));
+
+		// Add y Axis
+		yAxis = scatterSvg.append("g")
+			.call(d3.axisLeft(y));
+
+		scatterSvg.append('text')
 			.attr("transform", "rotate(-90)")
 			.attr('x', -height / 2)
 			.attr('y', -margin.left / 1.5)
@@ -175,12 +255,92 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.style('text-anchor', 'middle')
 			.text(yAxisVarFormatted)
 
-		svg.append('text')
+		scatterSvg.append('text')
 			.attr('x', width / 2)
 			.attr('y', height + margin.bottom / 1.5)
 			.style('font-size', 20)
 			.style('text-anchor', 'middle')
 			.text(xAxisVarFormatted)
+
+		let scatterTitle = scatterSvg.append('text')
+			.attr("class", "scatterTitle")
+			.attr('x', width / 2)
+			.attr('y', -10)
+			.style('font-size', 30)
+			.style('text-anchor', 'middle')
+			.text('Pokemon Stats Compared')
+
+		let SVGRect = d3.select(".scatterTitle").node().getBoundingClientRect()
+
+		// scatterSvg.append('rect')
+		// 	.attr("x", SVGRect.x - 80 + "px")
+		// 	.attr("y", SVGRect.y - 40 + "px")
+		// 	.attr("width", SVGRect.width)
+		// 	.attr("height", SVGRect.height)
+		// 	.attr("fill", "#ececec")
+		// 	.style('text-anchor', 'middle')
+		// 	.text(" ")
+
+		// scatterSvg.append('text')
+		// 	.attr("class", "scatterTitle")
+		// 	.attr('x', width / 2)
+		// 	.attr('y', -10)
+		// 	.style('font-size', 30)
+		// 	.style('text-anchor', 'middle')
+		// 	.text('Pokemon Stats Compared')
+
+		// var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+		// 	rect.setAttribute("x", SVGRect.x);
+		// 	rect.setAttribute("y", SVGRect.y);
+		// 	rect.setAttribute("width", SVGRect.width);
+		// 	rect.setAttribute("height", SVGRect.height);
+		// 	rect.setAttribute("fill", "yellow");
+		// 	ctx.insertBefore(rect, textElm);
+
+	//---------------------Regression line-------------------//
+
+		linearRegression = ss.linearRegression(data.map(d => [d[xAxisVar], d[yAxisVar]]))
+
+		linearRegressionLine = ss.linearRegressionLine(linearRegression)
+
+		const firstX = d3.min(data, function(d) { return d[xAxisVar]; });
+		const lastX = d3.max(data, function(d) { return d[xAxisVar]; });
+		const xCoordinates = [firstX, lastX];
+
+		// these x and y keys coordinate with the line variable below
+		let regressionPoints = xCoordinates.map(d => ({
+			x: d,
+			y: linearRegressionLine(d)
+		}));
+		
+		regressionLine = d3.line()
+			.x(d => x(d.x))
+			.y(d => y(d.y))
+
+		scatterSvg.append('path')
+			.classed('regressionLine', true)
+			.datum(regressionPoints)
+			.attr('d', regressionLine)
+			.attr('stroke', 'rgb(253, 251, 142)')
+			.attr('stroke-width', 2);
+
+
+		scatterSvg.append('rect')
+			.attr("x", SVGRect.x - 80 + "px")
+			.attr("y", SVGRect.y - 110 + "px")
+			.attr("width", "100vw")
+			.attr("height", 100)
+			.attr("fill", "#ececec")
+			.style('text-anchor', 'middle')
+			.text(" ")
+
+		scatterSvg.append('text')
+			.attr("class", "scatterTitle")
+			.attr('x', width / 2)
+			.attr('y', -10)
+			.style('font-size', 30)
+			.style('text-anchor', 'middle')
+			.text('Pokemon Stats Compared')
 	}
 
 	// formatting x and y axis variables for displaying with Capitalized first letters and no underscores
@@ -197,11 +357,11 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			return [xAxisVarFormatted, yAxisVarFormatted]
 		}
 	}
-	let [xAxisVarFormatted, yAxisVarFormatted] =varNameFormat(xAxisVar, yAxisVar)
+	// let [xAxisVarFormatted, yAxisVarFormatted] = varNameFormat(xAxisVar, yAxisVar)
 
 	// Add all dots for the scatterplot
-	function enterDots(data) {
-		svg.selectAll("dot")
+	function enterDots(data, xAxisVarFormatted, yAxisVarFormatted) {
+		scatterSvg.selectAll("dot")
 			.data(data)
 		.enter().append("circle")
 			.on("mouseover", function(d, i) { // show it and update html
@@ -219,10 +379,11 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.on("mousemove", function(d, i) {
 				let tempHeight = d3.select(".scatterplotTooltip").node().getBoundingClientRect().height
 				let tempWidth = d3.select(".scatterplotTooltip").node().getBoundingClientRect().width
+				console.log(tempHeight)
 				
 				scatterplotTooltip
-					.style("left", (d3.event.pageX - (tempWidth / 2) - 0.5) + "px")
-					.style("top", (d3.event.pageY - tempHeight - 12) + "px");
+					.style("left", (d3.event.offsetX - (tempWidth / 2) - 0.5) + "px")
+					.style("top", (d3.event.offsetY - tempHeight - 12) + "px");
 			})
 			.on("mouseout", function(d, i) {
 				scatterplotTooltip.transition()
@@ -244,7 +405,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 
 	function exitDots() {
-		svg.selectAll("circle")
+		scatterSvg.selectAll("circle")
 			.data([])
 			.exit()
 			.remove();
@@ -256,60 +417,61 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 
 
-	enterDots(data)
+	updateScatterY(xAxisVar, yAxisVar)
+	// enterDots(data)
 
-	// Add x Axis
-	svg.append("g")
-		.attr("transform", "translate(0," + height + ")")
-		.call(d3.axisBottom(x));
+	// // Add x Axis
+	// scatterSvg.append("g")
+	// 	.attr("transform", "translate(0," + height + ")")
+	// 	.call(d3.axisBottom(x));
 
-	// Add y Axis
-	svg.append("g")
-		.call(d3.axisLeft(y));
+	// // Add y Axis
+	// scatterSvg.append("g")
+	// 	.call(d3.axisLeft(y));
 
-	// y Axis Text
-	svg.append('text')
-		.attr("transform", "rotate(-90)")
-		.attr('x', -height / 2)
-		.attr('y', -margin.left / 1.5)
-		.style('font-size', 20)
-		.style('text-anchor', 'middle')
-		.text(yAxisVarFormatted)
+	// // y Axis Text
+	// scatterSvg.append('text')
+	// 	.attr("transform", "rotate(-90)")
+	// 	.attr('x', -height / 2)
+	// 	.attr('y', -margin.left / 1.5)
+	// 	.style('font-size', 20)
+	// 	.style('text-anchor', 'middle')
+	// 	.text(yAxisVarFormatted)
 
-	// x Axis Text
-	svg.append('text')
-		.attr('x', width / 2)
-		.attr('y', height + margin.bottom / 1.5)
-		.style('font-size', 20)
-		.style('text-anchor', 'middle')
-		.text(xAxisVarFormatted)
+	// // x Axis Text
+	// scatterSvg.append('text')
+	// 	.attr('x', width / 2)
+	// 	.attr('y', height + margin.bottom / 1.5)
+	// 	.style('font-size', 20)
+	// 	.style('text-anchor', 'middle')
+	// 	.text(xAxisVarFormatted)
 
-//---------------------Regression line-------------------//
+// //---------------------Regression line-------------------//
 
-	linearRegression = ss.linearRegression(data.map(d => [d[xAxisVar], d[yAxisVar]]))
+// 	linearRegression = ss.linearRegression(data.map(d => [d[xAxisVar], d[yAxisVar]]))
 
-	linearRegressionLine = ss.linearRegressionLine(linearRegression)
+// 	linearRegressionLine = ss.linearRegressionLine(linearRegression)
 
-	const firstX = d3.min(data, function(d) { return d[xAxisVar]; });
-	const lastX = d3.max(data, function(d) { return d[xAxisVar]; });
-	const xCoordinates = [firstX, lastX];
+// 	const firstX = d3.min(data, function(d) { return d[xAxisVar]; });
+// 	const lastX = d3.max(data, function(d) { return d[xAxisVar]; });
+// 	const xCoordinates = [firstX, lastX];
 	
-	// these x and y keys coordinate with the line variable below
-	let regressionPoints = xCoordinates.map(d => ({
-		x: d,
-		y: linearRegressionLine(d)
-	}));
+// 	// these x and y keys coordinate with the line variable below
+// 	let regressionPoints = xCoordinates.map(d => ({
+// 		x: d,
+// 		y: linearRegressionLine(d)
+// 	}));
 	   
-	regressionLine = d3.line()
-		.x(d => x(d.x))
-		.y(d => y(d.y))
+// 	regressionLine = d3.line()
+// 		.x(d => x(d.x))
+// 		.y(d => y(d.y))
 
-	svg.append('path')
-		.classed('regressionLine', true)
-		.datum(regressionPoints)
-		.attr('d', regressionLine)
-		.attr('stroke', 'rgb(253, 251, 142)')
-		.attr('stroke-width', 2);
+// 	scatterSvg.append('path')
+// 		.classed('regressionLine', true)
+// 		.datum(regressionPoints)
+// 		.attr('d', regressionLine)
+// 		.attr('stroke', 'rgb(253, 251, 142)')
+// 		.attr('stroke-width', 2);
 
 });
 </script>

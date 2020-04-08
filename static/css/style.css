@@ -2,9 +2,21 @@ html {
     background-color: white;
 }
 
+body {
+    margin: 0;
+}
+
 h1 {
     color: deeppink;
     text-align: center;
+    margin: 0;
+}
+
+.splash {
+    background-color: blue;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
 }
 
 /* .line is used for test2 */
@@ -26,6 +38,7 @@ h1 {
 }
 
 .scatterDiv {
-    margin-bottom: 50px;
+    margin-bottom: 0px;
     position: relative;
+    max-height: 100vh;
 }
