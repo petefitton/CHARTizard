@@ -142,7 +142,7 @@ let filtDropdown = filterDropdownLabel.append('select')
 
 filtDropdown.append('option')
 	.text("All")
-	.attr("value", "all")
+	.attr("value", "")
 
 filtDropdown.append('option')
 	.text("Bug")
@@ -268,7 +268,8 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	let xAxisVar = "capture_rate"
 	let yAxisVar = "base_total"
-	let filtVar = "all"
+	let filtVar = ""
+	let filtSingDuelVar = ""
 
 	let xAxis
 	let yAxis
@@ -367,7 +368,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		tempData = data
 
 	// Filter according to type chosen from dropdown menu
-		if (filtVar === "all") {
+		if (filtVar === "") {
 			tempData = tempData
 		} else {
 			tempData = tempData.filter(function(d){ return d.type1 === filtVar || d.type2 === filtVar})
@@ -377,17 +378,21 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			if (checkboxDualInput.property("checked")) {
 				// show both single and dual type Pokemon (default)
 				tempData = tempData
+				filtSingDuelVar = ""
 			} else {
 				// show only single type Pokemon
 				tempData = tempData.filter(function(d){ return d.type2 === ""})
+				filtSingDuelVar = "Single-Type"
 			}
 		} else {
 			if (checkboxDualInput.property("checked")) {
 				// show only dual type Pokemon
 				tempData = tempData.filter(function(d){ return d.type2 !== ""})
+				filtSingDuelVar = "Dual-Type"
 			} else {
 				// show no Pokemon
 				tempData = []
+				filtSingDuelVar = "No"
 			}
 		}
 
@@ -511,10 +516,12 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.attr("class", "scatterTitle")
 			.attr('x', width / 2)
 			.attr('y', -10)
-			.style('font-size', 30)
+			.style('font-size', 25)
 			.style('text-anchor', 'middle')
 			// Use formatted var names of x, y, and filt to change title of chart
-			.text('Pokemon Stats Compared')
+			// Filter + Pokemon xAxisVar vs yAxisVar
+			// filtSingDuelVar = "Single"
+			.text(filtSingDuelVar + " " + filtVarFormatted + " Pokemon: " + yAxisVarFormatted + " vs. " + xAxisVarFormatted)
 
 	}
 
@@ -524,6 +531,9 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	// formatting x and y axis variables for displaying with Capitalized first letters and no underscores
 	function varNameFormat(xAxisVar, yAxisVar, filtVar) {
 		let filtVarFormatted = filtVar.charAt(0).toUpperCase() + filtVar.substring(1)
+		if (filtVar === "") {
+			filtVarFormatted = ""
+		}
 		let tempArrX = xAxisVar.split("_")
 		let xAxisVarFormatted = tempArrX[0].charAt(0).toUpperCase() + tempArrX[0].substring(1) + " " + tempArrX[1].charAt(0).toUpperCase() + tempArrX[1].substring(1)
 		let tempArrY = yAxisVar.split("_")
