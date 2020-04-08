@@ -216,6 +216,32 @@ filtDropdown.append('option')
 	.text("Water")
 	.attr("value", "water")
 
+let checkboxSingleLabel = d3.select('.scatterDiv').append('label')
+	.text("Single-Type")
+	.style("position", "absolute")
+	.style("left", (margin.left) + "px")
+	.style("top", (margin.top / 4) + "px")
+
+let checkboxSingleInput = checkboxSingleLabel.append('input')
+	.attr("type", "checkbox")
+	.attr("checked", "checked")
+	.attr("value", "dual")
+	// .attr("name", "singDuel")
+	.style("display", "block")
+
+let checkboxDualLabel = d3.select('.scatterDiv').append('label')
+	.text("Dual-Type")
+	.style("position", "absolute")
+	.style("left", (margin.left * 2.5) + "px")
+	.style("top", (margin.top / 4) + "px")
+
+let checkboxDualInput = checkboxDualLabel.append('input')
+	.attr("type", "checkbox")
+	.attr("checked", "checked")
+	.attr("value", "dual")
+	// .attr("name", "singDuel")
+	.style("display", "block")
+
 
 // Get the data and process data within a large function
 d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
@@ -304,6 +330,14 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		updateScatter(xAxisVar, yAxisVar, filtVar)
 	})
 
+	checkboxSingleInput.on("change", function() {
+		updateScatter(xAxisVar, yAxisVar, filtVar)
+	})
+	
+	checkboxDualInput.on("change", function() {
+		updateScatter(xAxisVar, yAxisVar, filtVar)
+	})
+
 	function updateScatter(xAxisVar, yAxisVar, filtVar) {
 
 		// remove all information that could be changed
@@ -325,13 +359,33 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			yAxis.data([]).exit().remove()
 		}
 
+		// reset tempData to be equal to data
+		tempData = data
+
 	// Filter according to type chosen from dropdown menu
 		if (filtVar === "all") {
-			tempData = data
+			tempData = tempData
 		} else {
-			tempData = data.filter(function(d){ return d.type1 === filtVar || d.type2 === filtVar})
+			tempData = tempData.filter(function(d){ return d.type1 === filtVar || d.type2 === filtVar})
 		}
-		
+	// Filter according to checkboxes for single and dual type
+		if (checkboxSingleInput.property("checked")) {
+			if (checkboxDualInput.property("checked")) {
+				// show both single and dual type Pokemon (default)
+				tempData = tempData
+			} else {
+				// show only single type Pokemon
+				tempData = tempData.filter(function(d){ return d.type2 === ""})
+			}
+		} else {
+			if (checkboxDualInput.property("checked")) {
+				// show only dual type Pokemon
+				tempData = tempData.filter(function(d){ return d.type2 !== ""})
+			} else {
+				// show no Pokemon
+				tempData = []
+			}
+		}
 
 	// Process data
 
@@ -426,8 +480,8 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.attr("fill", "#ececec")
 			.style('text-anchor', 'middle')
 			.text(" ")
-console.log("This is filtVarFormatted: ")
-console.log(filtVarFormatted)
+// console.log("This is filtVarFormatted: ")
+// console.log(filtVarFormatted)
 		scatterSvg.append('text')
 			.attr("class", "scatterTitle")
 			.attr('x', width / 2)
