@@ -81,37 +81,37 @@ let yDropdown = yDropdownLabel.append('select')
 	.style("display", "block")
 
 yDropdown.append('option')
-	.text("base_total")
+	.text("Base Total")
 	.attr("value", "base_total")
 
 yDropdown.append('option')
-	.text("attack")
+	.text("Attack")
 	.attr("value", "attack")
 
 yDropdown.append('option')
-	.text("defense")
+	.text("Defense")
 	.attr("value", "defense")
 
 yDropdown.append('option')
-	.text("hp")
+	.text("Hp")
 	.attr("value", "hp")
 
 yDropdown.append('option')
-	.text("sp_attack")
+	.text("Sp Attack")
 	.attr("value", "sp_attack")
 
 yDropdown.append('option')
-	.text("sp_defense")
+	.text("Sp Defense")
 	.attr("value", "sp_defense")
 
 yDropdown.append('option')
-	.text("speed")
+	.text("Speed")
 	.attr("value", "speed")
 
 let xDropdownLabel = d3.select('.scatterDiv').append('label')
 	.text("X Variable")
 	.style("position", "absolute")
-	.style("right", (margin.right * 3) + "px")
+	.style("right", (margin.right * 2.6) + "px")
 	.style("top", (margin.top / 4) + "px")
 
 let xDropdown = xDropdownLabel.append('select')
@@ -119,16 +119,102 @@ let xDropdown = xDropdownLabel.append('select')
 	.style("display", "block")
 
 xDropdown.append('option')
-	.text("capture_rate")
+	.text("Capture Rate")
 	.attr("value", "capture_rate")
 
 xDropdown.append('option')
-	.text("weight_kg")
+	.text("Weight Kg")
 	.attr("value", "weight_kg")
 
 xDropdown.append('option')
-	.text("height_m")
+	.text("Height M")
 	.attr("value", "height_m")
+
+let filterDropdownLabel = d3.select('.scatterDiv').append('label')
+	.text("Type Filter")
+	.style("position", "absolute")
+	.style("right", (margin.right * 4.8) + "px")
+	.style("top", (margin.top / 4) + "px")
+
+let filtDropdown = filterDropdownLabel.append('select')
+	.attr("class", "filtDropdown")
+	.style("display", "block")
+
+filtDropdown.append('option')
+	.text("All")
+	.attr("value", "all")
+
+filtDropdown.append('option')
+	.text("Bug")
+	.attr("value", "bug")
+
+filtDropdown.append('option')
+	.text("Dark")
+	.attr("value", "dark")
+
+filtDropdown.append('option')
+	.text("Dragon")
+	.attr("value", "dragon")
+
+filtDropdown.append('option')
+	.text("Electric")
+	.attr("value", "electric")
+
+filtDropdown.append('option')
+	.text("Fairy")
+	.attr("value", "fairy")
+
+filtDropdown.append('option')
+	.text("Fighting")
+	.attr("value", "fighting")
+
+filtDropdown.append('option')
+	.text("Fire")
+	.attr("value", "fire")
+
+filtDropdown.append('option')
+	.text("Flying")
+	.attr("value", "flying")
+
+filtDropdown.append('option')
+	.text("Ghost")
+	.attr("value", "ghost")
+
+filtDropdown.append('option')
+	.text("Grass")
+	.attr("value", "grass")
+
+filtDropdown.append('option')
+	.text("Ground")
+	.attr("value", "ground")
+
+filtDropdown.append('option')
+	.text("Ice")
+	.attr("value", "ice")
+
+filtDropdown.append('option')
+	.text("Normal")
+	.attr("value", "normal")
+
+filtDropdown.append('option')
+	.text("Poison")
+	.attr("value", "poison")
+
+filtDropdown.append('option')
+	.text("Psychic")
+	.attr("value", "psychic")
+
+filtDropdown.append('option')
+	.text("Rock")
+	.attr("value", "rock")
+
+filtDropdown.append('option')
+	.text("Steel")
+	.attr("value", "steel")
+
+filtDropdown.append('option')
+	.text("Water")
+	.attr("value", "water")
 
 
 // Get the data and process data within a large function
@@ -138,6 +224,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	// Test filtering data (remove all pokemon from data that have capture_rate === 120)
 	// data = data.filter(function(d){ return d.capture_rate != "120" })
+	// data = data.filter(function(d){ return d.type2 === "fire"})
 
 	// format data from strings to numbers
 	data.forEach(function(d) {
@@ -155,9 +242,11 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	let xAxisVar = "capture_rate"
 	let yAxisVar = "base_total"
+	let filtVar = "all"
 
 	let xAxis
 	let yAxis
+	let tempData
 
 	// create defs, linear gradient, and stop elements with appropriate settings
 	var defs = scatterSvg.append("defs")
@@ -191,23 +280,31 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	// handles y Variable dropdown menu change
 	yDropdown.on("change", function() {
 		// update yAxisVar's value
-		let el = document.querySelector( ':focus' )
-		if( el ) el.blur()
+		let elem = document.querySelector(':focus')
+		if (elem) elem.blur()
 		yAxisVar = this.value
-		updateScatter(xAxisVar, yAxisVar)
+		updateScatter(xAxisVar, yAxisVar, filtVar)
 	})
 
 	// handles x Variable dropdown menu change
 	xDropdown.on("change", function() {
 		// update xAxisVar's value
-		let el = document.querySelector( ':focus' )
-		if( el ) el.blur()
+		let elem = document.querySelector(':focus')
+		if (elem) elem.blur()
 		xAxisVar = this.value
-		updateScatter(xAxisVar, yAxisVar)
+		updateScatter(xAxisVar, yAxisVar, filtVar)
 	})
 
-	function updateScatter(xAxisVar, yAxisVar) {
-		// no filtering needed yet for x and y axes changes
+	// handles x Variable dropdown menu change
+	filtDropdown.on("change", function() {
+		// update which Pokemon type is displayed
+		let elem = document.querySelector(':focus')
+		if (elem) elem.blur()
+		filtVar = this.value
+		updateScatter(xAxisVar, yAxisVar, filtVar)
+	})
+
+	function updateScatter(xAxisVar, yAxisVar, filtVar) {
 
 		// remove all information that could be changed
 		exitDots()
@@ -228,9 +325,59 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			yAxis.data([]).exit().remove()
 		}
 
+	// Filter according to type chosen from dropdown menu
+		if (filtVar === "all") {
+			tempData = data
+		} else {
+			tempData = data.filter(function(d){ return d.type1 === filtVar || d.type2 === filtVar})
+		}
+		
+
+	// Process data
+
 		// reset domain
-		x.domain([0, d3.max(data, function(d) { return d[xAxisVar]; }) + 5]);
-		y.domain([d3.min(data, function(d) { return d[yAxisVar]; }) - 10, d3.max(data, function(d) { return d[yAxisVar]; }) + 20]);
+		x.domain([0, d3.max(tempData, function(d) { return d[xAxisVar]; }) + 5]);
+		y.domain([d3.min(tempData, function(d) { return d[yAxisVar]; }) - 10, d3.max(tempData, function(d) { return d[yAxisVar]; }) + 20]);
+
+	//---------------------Regression line-------------------//
+
+		linearRegression = ss.linearRegression(tempData.map(d => [d[xAxisVar], d[yAxisVar]]))
+
+		linearRegressionLine = ss.linearRegressionLine(linearRegression)
+
+		let firstX = d3.min(tempData, function(d) { return d[xAxisVar]; });
+		let lastX = d3.max(tempData, function(d) { return d[xAxisVar]; });
+		let xCoordinates = [firstX, lastX];
+
+		// these x and y keys coordinate with the line variable below
+		let regressionPoints = xCoordinates.map(d => ({
+			x: d,
+			y: linearRegressionLine(d)
+		}));
+		
+		regressionLine = d3.line()
+			.x(d => x(d.x))
+			.y(d => y(d.y))
+
+		scatterSvg.append('path')
+			.classed('regressionLine', true)
+			.datum(regressionPoints)
+			.attr('d', regressionLine)
+			.attr('stroke', 'rgb(253, 251, 142)')
+			.attr('stroke-width', 2);
+
+
+
+
+
+		scatterSvg.append('rect')
+			.attr("x", "0px")
+			.attr("y", height + "px")
+			.attr("width", "100vw")
+			.attr("height", margin.bottom)
+			.attr("fill", "#ececec")
+			.style('text-anchor', 'middle')
+			.text(" ")
 
 		//Keeping these comments for now
 		// updatePoints(groupData);
@@ -240,10 +387,10 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		// var groupData = getFilteredData(data, group);
 
 		// format x and y axes for display in tooltips and axes
-		let [xAxisVarFormatted, yAxisVarFormatted] = varNameFormat(xAxisVar, yAxisVar)
+		let [xAxisVarFormatted, yAxisVarFormatted, filtVarFormatted] = varNameFormat(xAxisVar, yAxisVar, filtVar)
 
 		// create all new dots with correct location
-		enterDots(data, xAxisVarFormatted, yAxisVarFormatted)
+		enterDots(tempData, xAxisVarFormatted, yAxisVarFormatted)
 
 		// Add x Axis
 		xAxis = scatterSvg.append("g")
@@ -270,36 +417,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.text(xAxisVarFormatted)
 
 
-	//---------------------Regression line-------------------//
-
-		linearRegression = ss.linearRegression(data.map(d => [d[xAxisVar], d[yAxisVar]]))
-
-		linearRegressionLine = ss.linearRegressionLine(linearRegression)
-
-		const firstX = d3.min(data, function(d) { return d[xAxisVar]; });
-		const lastX = d3.max(data, function(d) { return d[xAxisVar]; });
-		const xCoordinates = [firstX, lastX];
-
-		// these x and y keys coordinate with the line variable below
-		let regressionPoints = xCoordinates.map(d => ({
-			x: d,
-			y: linearRegressionLine(d)
-		}));
-		
-		regressionLine = d3.line()
-			.x(d => x(d.x))
-			.y(d => y(d.y))
-
-		scatterSvg.append('path')
-			.classed('regressionLine', true)
-			.datum(regressionPoints)
-			.attr('d', regressionLine)
-			.attr('stroke', 'rgb(253, 251, 142)')
-			.attr('stroke-width', 2);
-
-
-
-
 
 		scatterSvg.append('rect')
 			.attr("x", "0px")
@@ -309,31 +426,35 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.attr("fill", "#ececec")
 			.style('text-anchor', 'middle')
 			.text(" ")
-
+console.log("This is filtVarFormatted: ")
+console.log(filtVarFormatted)
 		scatterSvg.append('text')
 			.attr("class", "scatterTitle")
 			.attr('x', width / 2)
 			.attr('y', -10)
 			.style('font-size', 30)
 			.style('text-anchor', 'middle')
+			// Use formatted var names of x, y, and filt to change title of chart
 			.text('Pokemon Stats Compared')
+
 	}
 
 
 //-------------------------Function declarations cont.-------------------------------//
 
 	// formatting x and y axis variables for displaying with Capitalized first letters and no underscores
-	function varNameFormat(xAxisVar, yAxisVar) {
+	function varNameFormat(xAxisVar, yAxisVar, filtVar) {
+		let filtVarFormatted = filtVar.charAt(0).toUpperCase() + filtVar.substring(1)
 		let tempArrX = xAxisVar.split("_")
 		let xAxisVarFormatted = tempArrX[0].charAt(0).toUpperCase() + tempArrX[0].substring(1) + " " + tempArrX[1].charAt(0).toUpperCase() + tempArrX[1].substring(1)
 		let tempArrY = yAxisVar.split("_")
 		let yAxisVarFormatted
 		if (tempArrY.length > 1) {
 			yAxisVarFormatted = tempArrY[0].charAt(0).toUpperCase() + tempArrY[0].substring(1) + " " + tempArrY[1].charAt(0).toUpperCase() + tempArrY[1].substring(1)
-			return [xAxisVarFormatted, yAxisVarFormatted]
+			return [xAxisVarFormatted, yAxisVarFormatted, filtVarFormatted]
 		} else {
 			yAxisVarFormatted = tempArrY[0].charAt(0).toUpperCase() + tempArrY[0].substring(1)
-			return [xAxisVarFormatted, yAxisVarFormatted]
+			return [xAxisVarFormatted, yAxisVarFormatted, filtVarFormatted]
 		}
 	}
 	// let [xAxisVarFormatted, yAxisVarFormatted] = varNameFormat(xAxisVar, yAxisVar)
@@ -394,7 +515,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 // -------------------Run initializations/Function calls------------------------//
 
-	updateScatter(xAxisVar, yAxisVar)
+	updateScatter(xAxisVar, yAxisVar, filtVar)
 
 });
 </script>
