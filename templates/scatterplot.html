@@ -1,5 +1,43 @@
 <script>
 
+// -----------------------Initial setup--------------------------------//
+
+// Setup size of svg/dimensions
+// Setup domain of x and y
+// Setup scatterplotTooltip
+// Setup dropdown menus
+
+
+// ---------------------------d3.csv()--------------------------------//
+
+// Variable declarations and processing
+	// Format data
+	// y and x axis variable name declarations
+	// defs/linearGradients/stops for coloring dots
+	// hide/hidehandler
+// Function declarations
+	// y dropdown menu handler
+	// x dropdown menu handler
+	// updateScatter function declaration
+		// Garage collect
+		// Reset/Format/Create
+			// Domain setup
+			// Call varNameFormat() - define formatted variable names
+			// Call enterDots
+			// Add x and y axes
+			// Add x and y axes text
+			// Regression Line - declarations for vars/functions and creation of line
+			// Add scatterTitle and corresponding rect
+	// varNameFormat declaration with tuple xAxisVarFormatted, yAxisVarFormatted declarations
+	// enterDots declaration
+	// exitDots declaration
+// Run initialization/function calls
+	// enterDots()
+
+
+
+
+
 // set/calculate variables for dimensions and margins of scatterplot
 var margin = {top: 60, right: 50, bottom: 60, left: 65},
 	width = window.innerWidth - margin.left - margin.right - 30,
@@ -19,13 +57,6 @@ var scatterSvg = d3.select(".scatterDiv").append("svg")
 .append("g")
 	.attr("transform",
 		  "translate(" + margin.left + "," + margin.top + ")");
-
-scatterSvg.append('text')
-	.attr('x', width / 2)
-	.attr('y', -10)
-	.style('font-size', 30)
-	.style('text-anchor', 'middle')
-	.text('Pokemon Stats Compared')
 
 let scatterplotTooltip = d3.select('.scatterDiv').append('div')
 	.attr('class', 'scatterplotTooltip')
@@ -102,27 +133,6 @@ xDropdown.append('option')
 // Get the data and process data within a large function
 d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data) {
 
-// -----------------------Initial setup--------------------------------//
-// Variable declarations and processing
-	// Format data
-	// y and x axis variable name declarations
-	// domain setup
-	// defs/linearGradients/stops for coloring dots
-	// hide/hidehandler
-// Function declarations
-	// y dropdown menu handler
-	// updateScatterY function declaration
-	// varNameFormat declaration with tuple xAxisVarFormatted, yAxisVarFormatted declarations
-	// enterDots declaration
-	// exitDots declaration
-// Run initialization/function calls
-	// enterDots()
-	// add x and y axes
-	// add x and y axes text
-// Regression Line - declarations for vars/functions and creation of line
-
-
-
 // -----------------------Variable declarations and processing--------------------------------//
 
 	// Test filtering data (remove all pokemon from data that have capture_rate === 120)
@@ -147,10 +157,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	let xAxis
 	let yAxis
-	// Setup domain of data
-	// x.domain([0, d3.max(data, function(d) { return d[xAxisVar]; }) + 5]);
-	// y.domain([d3.min(data, function(d) { return d[yAxisVar]; }) - 10, d3.max(data, function(d) { return d[yAxisVar]; }) + 20]);
-	
+
 	// create defs, linear gradient, and stop elements with appropriate settings
 	var defs = scatterSvg.append("defs")
 	for (type1 in typeColors) {
@@ -186,20 +193,20 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		let el = document.querySelector( ':focus' )
 		if( el ) el.blur()
 		yAxisVar = this.value
-		updateScatterY(xAxisVar, yAxisVar)
+		updateScatter(xAxisVar, yAxisVar)
 	})
 
 	// handles x Variable dropdown menu change
 	xDropdown.on("change", function() {
-		// update yAxisVar's value
+		// update xAxisVar's value
 		let el = document.querySelector( ':focus' )
 		if( el ) el.blur()
 		xAxisVar = this.value
-		updateScatterY(xAxisVar, yAxisVar)
+		updateScatter(xAxisVar, yAxisVar)
 	})
 
-	function updateScatterY(xAxisVar, yAxisVar) {
-		// no filtering needed according to this dropdown menu set of options
+	function updateScatter(xAxisVar, yAxisVar) {
+		// no filtering needed yet for x and y axes changes
 
 		// remove all information that could be changed
 		exitDots()
@@ -216,10 +223,10 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		if (xAxis) {
 			xAxis.data([]).exit().remove()
 		}
-
 		if (yAxis) {
 			yAxis.data([]).exit().remove()
 		}
+
 		// reset domain
 		x.domain([0, d3.max(data, function(d) { return d[xAxisVar]; }) + 5]);
 		y.domain([d3.min(data, function(d) { return d[yAxisVar]; }) - 10, d3.max(data, function(d) { return d[yAxisVar]; }) + 20]);
@@ -230,8 +237,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		// exitPoints(groupData);
 		// var group = e.target.value;
 		// var groupData = getFilteredData(data, group);
-//TOOLTIP reset
-//axes numbers create (removal if necessary too)
+
 		// format x and y axes for display in tooltips and axes
 		let [xAxisVarFormatted, yAxisVarFormatted] = varNameFormat(xAxisVar, yAxisVar)
 
@@ -262,40 +268,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.style('text-anchor', 'middle')
 			.text(xAxisVarFormatted)
 
-		let scatterTitle = scatterSvg.append('text')
-			.attr("class", "scatterTitle")
-			.attr('x', width / 2)
-			.attr('y', -10)
-			.style('font-size', 30)
-			.style('text-anchor', 'middle')
-			.text('Pokemon Stats Compared')
-
-		let SVGRect = d3.select(".scatterTitle").node().getBoundingClientRect()
-
-		// scatterSvg.append('rect')
-		// 	.attr("x", SVGRect.x - 80 + "px")
-		// 	.attr("y", SVGRect.y - 40 + "px")
-		// 	.attr("width", SVGRect.width)
-		// 	.attr("height", SVGRect.height)
-		// 	.attr("fill", "#ececec")
-		// 	.style('text-anchor', 'middle')
-		// 	.text(" ")
-
-		// scatterSvg.append('text')
-		// 	.attr("class", "scatterTitle")
-		// 	.attr('x', width / 2)
-		// 	.attr('y', -10)
-		// 	.style('font-size', 30)
-		// 	.style('text-anchor', 'middle')
-		// 	.text('Pokemon Stats Compared')
-
-		// var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-		// 	rect.setAttribute("x", SVGRect.x);
-		// 	rect.setAttribute("y", SVGRect.y);
-		// 	rect.setAttribute("width", SVGRect.width);
-		// 	rect.setAttribute("height", SVGRect.height);
-		// 	rect.setAttribute("fill", "yellow");
-		// 	ctx.insertBefore(rect, textElm);
 
 	//---------------------Regression line-------------------//
 
@@ -324,6 +296,17 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.attr('stroke', 'rgb(253, 251, 142)')
 			.attr('stroke-width', 2);
 
+
+
+		let scatterTitle = scatterSvg.append('text')
+			.attr("class", "scatterTitle")
+			.attr('x', width / 2)
+			.attr('y', -10)
+			.style('font-size', 30)
+			.style('text-anchor', 'middle')
+			.text('Pokemon Stats Compared')
+
+		let SVGRect = d3.select(".scatterTitle").node().getBoundingClientRect()
 
 		scatterSvg.append('rect')
 			.attr("x", SVGRect.x - 80 + "px")
@@ -415,63 +398,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 // -------------------Run initializations/Function calls------------------------//
 
-
-
-	updateScatterY(xAxisVar, yAxisVar)
-	// enterDots(data)
-
-	// // Add x Axis
-	// scatterSvg.append("g")
-	// 	.attr("transform", "translate(0," + height + ")")
-	// 	.call(d3.axisBottom(x));
-
-	// // Add y Axis
-	// scatterSvg.append("g")
-	// 	.call(d3.axisLeft(y));
-
-	// // y Axis Text
-	// scatterSvg.append('text')
-	// 	.attr("transform", "rotate(-90)")
-	// 	.attr('x', -height / 2)
-	// 	.attr('y', -margin.left / 1.5)
-	// 	.style('font-size', 20)
-	// 	.style('text-anchor', 'middle')
-	// 	.text(yAxisVarFormatted)
-
-	// // x Axis Text
-	// scatterSvg.append('text')
-	// 	.attr('x', width / 2)
-	// 	.attr('y', height + margin.bottom / 1.5)
-	// 	.style('font-size', 20)
-	// 	.style('text-anchor', 'middle')
-	// 	.text(xAxisVarFormatted)
-
-// //---------------------Regression line-------------------//
-
-// 	linearRegression = ss.linearRegression(data.map(d => [d[xAxisVar], d[yAxisVar]]))
-
-// 	linearRegressionLine = ss.linearRegressionLine(linearRegression)
-
-// 	const firstX = d3.min(data, function(d) { return d[xAxisVar]; });
-// 	const lastX = d3.max(data, function(d) { return d[xAxisVar]; });
-// 	const xCoordinates = [firstX, lastX];
-	
-// 	// these x and y keys coordinate with the line variable below
-// 	let regressionPoints = xCoordinates.map(d => ({
-// 		x: d,
-// 		y: linearRegressionLine(d)
-// 	}));
-	   
-// 	regressionLine = d3.line()
-// 		.x(d => x(d.x))
-// 		.y(d => y(d.y))
-
-// 	scatterSvg.append('path')
-// 		.classed('regressionLine', true)
-// 		.datum(regressionPoints)
-// 		.attr('d', regressionLine)
-// 		.attr('stroke', 'rgb(253, 251, 142)')
-// 		.attr('stroke-width', 2);
+	updateScatter(xAxisVar, yAxisVar)
 
 });
 </script>

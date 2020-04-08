@@ -22,6 +22,8 @@
 -Data Filtering with Enter, Exit, and Update: https://stackoverflow.com/questions/39964570/how-to-filter-data-with-d3-js
 -JS Array Destructuring/Tuple Usage: https://stackoverflow.com/questions/4512405/javascript-variable-assignments-from-tuples
 -Blur for better UX with Dropdown Menus in conjunction with tooltips: https://stackoverflow.com/questions/16779247/how-to-force-to-lose-focus-of-all-fields-in-a-form-in-jquery
+-Adding background to text inside an SVG: https://bl.ocks.org/uicoded/dec8786d89184c88fa8f2c0abcdc152d
+-Adding background to text inside an SVG: https://stackoverflow.com/questions/15500894/background-color-of-text-in-svg
 
 
 
