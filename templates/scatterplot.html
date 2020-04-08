@@ -28,6 +28,7 @@
 			// Add x and y axes text
 			// Regression Line - declarations for vars/functions and creation of line
 			// Add scatterTitle and corresponding rect
+// Function declarations cont.
 	// varNameFormat declaration with tuple xAxisVarFormatted, yAxisVarFormatted declarations
 	// enterDots declaration
 	// exitDots declaration
@@ -41,7 +42,7 @@
 // set/calculate variables for dimensions and margins of scatterplot
 var margin = {top: 60, right: 50, bottom: 60, left: 65},
 	width = window.innerWidth - margin.left - margin.right - 30,
-	height = 600 - margin.top - margin.bottom;
+	height = window.innerHeight - margin.top - margin.bottom;
 
 // set the ranges of x and y axes
 var x = d3.scaleLinear().range([0, width]);
@@ -73,7 +74,7 @@ let yDropdownLabel = d3.select('.scatterDiv').append('label')
 	.text("Y Variable")
 	.style("position", "absolute")
 	.style("right", (margin.right / 2) + "px")
-	.style("top", (margin.top / 2) + "px")
+	.style("top", (margin.top / 4) + "px")
 
 let yDropdown = yDropdownLabel.append('select')
 	.attr("class", "yDropdown")
@@ -111,7 +112,7 @@ let xDropdownLabel = d3.select('.scatterDiv').append('label')
 	.text("X Variable")
 	.style("position", "absolute")
 	.style("right", (margin.right * 3) + "px")
-	.style("top", (margin.top / 2) + "px")
+	.style("top", (margin.top / 4) + "px")
 
 let xDropdown = xDropdownLabel.append('select')
 	.attr("class", "xDropdown")
@@ -298,21 +299,13 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 
 
-		let scatterTitle = scatterSvg.append('text')
-			.attr("class", "scatterTitle")
-			.attr('x', width / 2)
-			.attr('y', -10)
-			.style('font-size', 30)
-			.style('text-anchor', 'middle')
-			.text('Pokemon Stats Compared')
 
-		let SVGRect = d3.select(".scatterTitle").node().getBoundingClientRect()
 
 		scatterSvg.append('rect')
-			.attr("x", SVGRect.x - 80 + "px")
-			.attr("y", SVGRect.y - 110 + "px")
+			.attr("x", "0px")
+			.attr("y", "-85px")
 			.attr("width", "100vw")
-			.attr("height", 100)
+			.attr("height", 81)
 			.attr("fill", "#ececec")
 			.style('text-anchor', 'middle')
 			.text(" ")
@@ -325,6 +318,9 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.style('text-anchor', 'middle')
 			.text('Pokemon Stats Compared')
 	}
+
+
+//-------------------------Function declarations cont.-------------------------------//
 
 	// formatting x and y axis variables for displaying with Capitalized first letters and no underscores
 	function varNameFormat(xAxisVar, yAxisVar) {

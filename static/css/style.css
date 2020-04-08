@@ -42,3 +42,7 @@ h1 {
     position: relative;
     max-height: 100vh;
 }
+
+svg {
+    max-height: 100vh;
+}
