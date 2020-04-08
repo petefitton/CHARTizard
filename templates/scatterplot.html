@@ -5,7 +5,7 @@
 // Setup size of svg/dimensions
 // Setup domain of x and y
 // Setup scatterplotTooltip
-// Setup dropdown menus
+// Setup dropdown menus & checkboxes
 
 
 // ---------------------------d3.csv()--------------------------------//
@@ -13,20 +13,26 @@
 // Variable declarations and processing
 	// Format data
 	// y and x axis variable name declarations
+	// Other variable declarations
 	// defs/linearGradients/stops for coloring dots
 	// hide/hidehandler
 // Function declarations
 	// y dropdown menu handler
 	// x dropdown menu handler
+	// checkbox handlers
 	// updateScatter function declaration
-		// Garage collect
-		// Reset/Format/Create
+		// Collect garbage
+		// Reset/Filter/Format/Create
+			// Reset tempData
+			// Filter tempData
 			// Domain setup
+			// Regression Line - declarations for vars/functions and creation of line
+			// Add rect for x axis
 			// Call varNameFormat() - define formatted variable names
 			// Call enterDots
 			// Add x and y axes
+			// Add grid
 			// Add x and y axes text
-			// Regression Line - declarations for vars/functions and creation of line
 			// Add scatterTitle and corresponding rect
 // Function declarations cont.
 	// varNameFormat declaration with tuple xAxisVarFormatted, yAxisVarFormatted declarations
@@ -226,7 +232,6 @@ let checkboxSingleInput = checkboxSingleLabel.append('input')
 	.attr("type", "checkbox")
 	.attr("checked", "checked")
 	.attr("value", "dual")
-	// .attr("name", "singDuel")
 	.style("display", "block")
 
 let checkboxDualLabel = d3.select('.scatterDiv').append('label')
@@ -239,7 +244,6 @@ let checkboxDualInput = checkboxDualLabel.append('input')
 	.attr("type", "checkbox")
 	.attr("checked", "checked")
 	.attr("value", "dual")
-	// .attr("name", "singDuel")
 	.style("display", "block")
 
 
@@ -432,7 +436,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 
 
-
+		// rect that blocks out regression line passing through x axis
 		scatterSvg.append('rect')
 			.attr("x", "0px")
 			.attr("y", height + "px")
@@ -485,6 +489,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 				.attr("x1", 0)
 				.attr("x2", width))
 
+		// y and x axes names
 		scatterSvg.append('text')
 			.attr("transform", "rotate(-90)")
 			.attr('x', -height / 2)
@@ -501,7 +506,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.text(xAxisVarFormatted)
 
 
-
+		// rect that blocks out regression line passing through title
 		scatterSvg.append('rect')
 			.attr("x", "0px")
 			.attr("y", "-85px")
@@ -510,17 +515,14 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.attr("fill", "#ececec")
 			.style('text-anchor', 'middle')
 			.text(" ")
-// console.log("This is filtVarFormatted: ")
-// console.log(filtVarFormatted)
+
+		// set title of scatterplot
 		scatterSvg.append('text')
 			.attr("class", "scatterTitle")
 			.attr('x', width / 2)
 			.attr('y', -10)
 			.style('font-size', 25)
 			.style('text-anchor', 'middle')
-			// Use formatted var names of x, y, and filt to change title of chart
-			// Filter + Pokemon xAxisVar vs yAxisVar
-			// filtSingDuelVar = "Single"
 			.text(filtSingDuelVar + " " + filtVarFormatted + " Pokemon: " + yAxisVarFormatted + " vs. " + xAxisVarFormatted)
 
 	}
@@ -531,9 +533,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	// formatting x and y axis variables for displaying with Capitalized first letters and no underscores
 	function varNameFormat(xAxisVar, yAxisVar, filtVar) {
 		let filtVarFormatted = filtVar.charAt(0).toUpperCase() + filtVar.substring(1)
-		if (filtVar === "") {
-			filtVarFormatted = ""
-		}
 		let tempArrX = xAxisVar.split("_")
 		let xAxisVarFormatted = tempArrX[0].charAt(0).toUpperCase() + tempArrX[0].substring(1) + " " + tempArrX[1].charAt(0).toUpperCase() + tempArrX[1].substring(1)
 		let tempArrY = yAxisVar.split("_")
@@ -546,7 +545,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			return [xAxisVarFormatted, yAxisVarFormatted, filtVarFormatted]
 		}
 	}
-	// let [xAxisVarFormatted, yAxisVarFormatted] = varNameFormat(xAxisVar, yAxisVar)
 
 	// Add all dots for the scatterplot
 	function enterDots(data, xAxisVarFormatted, yAxisVarFormatted) {
