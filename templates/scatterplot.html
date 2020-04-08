@@ -273,6 +273,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	let xAxis
 	let yAxis
 	let tempData
+	let grid
 
 	// create defs, linear gradient, and stop elements with appropriate settings
 	var defs = scatterSvg.append("defs")
@@ -357,6 +358,9 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		}
 		if (yAxis) {
 			yAxis.data([]).exit().remove()
+		}
+		if (grid) {
+			grid.data([]).exit().remove()
 		}
 
 		// reset tempData to be equal to data
@@ -454,6 +458,27 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		// Add y Axis
 		yAxis = scatterSvg.append("g")
 			.call(d3.axisLeft(y));
+
+		// Add grid
+		grid = scatterSvg.append("g")		
+			.attr("stroke", "currentColor")
+			.attr("stroke-opacity", 0.1)
+		.call(g => g.append("g")
+			.selectAll("line")
+			.data(x.ticks())
+			.join("line")
+				.attr("x1", d => 0.5 + x(d))
+				.attr("x2", d => 0.5 + x(d))
+				.attr("y1", 0)
+				.attr("y2", height))
+		.call(g => g.append("g")
+			.selectAll("line")
+			.data(y.ticks())
+			.join("line")
+				.attr("y1", d => 0.5 + y(d))
+				.attr("y2", d => 0.5 + y(d))
+				.attr("x1", 0)
+				.attr("x2", width))
 
 		scatterSvg.append('text')
 			.attr("transform", "rotate(-90)")

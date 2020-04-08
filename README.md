@@ -25,7 +25,7 @@
 -Adding background to text inside an SVG: https://bl.ocks.org/uicoded/dec8786d89184c88fa8f2c0abcdc152d
 -Adding background to text inside an SVG: https://stackoverflow.com/questions/15500894/background-color-of-text-in-svg
 -Checkboxes in D3: https://bl.ocks.org/johnnygizmo/3d593d3bf631e102a2dbee64f62d9de4
-
+-Grid in D3: https://observablehq.com/@d3/scatterplot-with-shapes
 
 
 ## Chartizard Pitch
