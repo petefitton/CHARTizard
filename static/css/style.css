@@ -6,14 +6,38 @@ body {
     margin: 0;
 }
 
+.headerBoxContainer {
+    padding-top: 30vh;
+}
+
+.headerBox {
+    background-color: white;
+    /* height: 136px; */
+    width: 800px;
+    margin: 0 auto;
+}
+
 h1 {
-    color: deeppink;
+    color: black;
+    font-size: 120px;
     text-align: center;
     margin: 0;
+    padding: 5px;
+    /* padding-top: 239px; */
+    /* padding-top: 30vh; */
+    /* text-shadow: 1px 0px black, -1px 0px black, 0px 1px black, 0px -1px black; */
 }
 
 .splash {
-    background-color: blue;
+    /* background-image: url(../img/splash.png);
+    background-color: white;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    margin: 0; */
+    background-image: url(../img/splash.png);
+    background-color: white;
+    background-size: cover;
     height: 100vh;
     width: 100vw;
     margin: 0;

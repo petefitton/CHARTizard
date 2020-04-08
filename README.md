@@ -1,4 +1,6 @@
 # Sources
+-Splash Image: https://i.redd.it/gqnzk6788v411.png https://www.reddit.com/r/wimmelbilder/comments/8s55wz/pokemon_color_spectrum_featuring_all_pokemon_in/
+
 -General Tutorial: https://www.freecodecamp.org/news/a-visual-reference-for-d3/
 -Scatterplot Tutorial: https://bl.ocks.org/d3noob/a44d21b304b9f7260a284b1883232002
 -Making D3 responsive: https://brendansudol.com/writing/responsive-d3
