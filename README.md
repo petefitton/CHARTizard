@@ -1,5 +1,7 @@
 # Sources
 -Splash Image: https://i.redd.it/gqnzk6788v411.png https://www.reddit.com/r/wimmelbilder/comments/8s55wz/pokemon_color_spectrum_featuring_all_pokemon_in/
+-Charizard Image: https://cdn.weasyl.com/static/media/52/67/7f/52677ffe59d86ec32b87cd11ea45ce45e15ec6fb855237776c922b45ac02214b.png
+
 
 -General Tutorial: https://www.freecodecamp.org/news/a-visual-reference-for-d3/
 -Scatterplot Tutorial: https://bl.ocks.org/d3noob/a44d21b304b9f7260a284b1883232002
