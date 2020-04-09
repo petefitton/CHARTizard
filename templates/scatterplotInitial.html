@@ -1,0 +1,246 @@
+<script>
+
+// -----------------------Initial setup--------------------------------//
+
+// Setup size of svg/dimensions
+// Setup domain of x and y
+// Setup scatterplotTooltip
+// Setup dropdown menus & checkboxes
+
+
+
+// set/calculate variables for dimensions and margins of scatterplot
+var margin = {top: 60, right: 160, bottom: 78, left: 60},
+    width = window.innerWidth - margin.left - margin.right - 30,
+    height = window.innerHeight - margin.top - margin.bottom;
+
+// set the ranges of x and y axes
+var x = d3.scaleLinear().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+
+// scatterSvg create and setup + group element create/append that sets area to start in the corner with margins applied
+var scatterSvg = d3.select(".scatterDiv").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("color", "black")
+    .attr("style", "background-color: white")
+    .call(responsivefy)
+.append("g")
+    .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+let scatterplotTooltip = d3.select('.scatterDiv').append('div')
+    .attr('class', 'scatterplotTooltip')
+    .style("position", "absolute")
+    .style("opacity", 0)
+    .style("border", "1px solid black")
+    .style("padding", "5px")
+    .style("background-color", "white")
+    .style("cursor", "default")
+    .style("top", "0px")
+    .style("left", "50%")
+
+// SideBar
+let scatterplotSideBar = d3.select('.scatterDiv').append('div')
+    .attr("class", "scatterplotSideBar")
+    .style("height", "100vh")
+    .style("border-left", "2px solid #929292")
+    .style("width", margin.right - 10 + "px")
+    .style("position", "absolute")
+    .style("top", "0px")
+    .style("right", "0px")
+    .style("background-color", "#ececec")
+
+d3.select(".scatterplotSideBar").append('p')
+    .style("text-align", "center")
+    .style("font-size", "25px")
+    .style("border-bottom", "1px solid black")
+    .style("padding-bottom", "5px")
+    .style("margin", "10px auto")
+    .text("Controls")
+
+// Variables section
+d3.select(".scatterplotSideBar").append('p')
+    .style("font-size", "18px")
+    .style("margin-left", "5px")
+    .style("margin-top", "15px")
+    .text("Variables")
+
+let yDropdownLabel = d3.select('.scatterplotSideBar').append('label')
+    .style("margin-left", "20px")
+    .text("Y Variable")
+
+let yDropdown = yDropdownLabel.append('select')
+    .attr("class", "yDropdown")
+    .style("display", "block")
+    .style("margin-left", "20px")
+    .style("margin-bottom", "7px")
+
+yDropdown.append('option')
+    .text("Base Total")
+    .attr("value", "base_total")
+
+yDropdown.append('option')
+    .text("Attack")
+    .attr("value", "attack")
+
+yDropdown.append('option')
+    .text("Defense")
+    .attr("value", "defense")
+
+yDropdown.append('option')
+    .text("Hp")
+    .attr("value", "hp")
+
+yDropdown.append('option')
+    .text("Sp Attack")
+    .attr("value", "sp_attack")
+
+yDropdown.append('option')
+    .text("Sp Defense")
+    .attr("value", "sp_defense")
+
+yDropdown.append('option')
+    .text("Speed")
+    .attr("value", "speed")
+
+let xDropdownLabel = d3.select('.scatterplotSideBar').append('label')
+    .text("X Variable")
+    .style("margin-left", "20px")
+
+let xDropdown = xDropdownLabel.append('select')
+    .attr("class", "xDropdown")
+    .style("display", "block")
+    .style("margin-left", "20px")
+
+xDropdown.append('option')
+    .text("Capture Rate")
+    .attr("value", "capture_rate")
+
+xDropdown.append('option')
+    .text("Weight Kg")
+    .attr("value", "weight_kg")
+
+xDropdown.append('option')
+    .text("Height M")
+    .attr("value", "height_m")
+
+// Filters section
+d3.select(".scatterplotSideBar").append('p')
+    .style("font-size", "18px")
+    .style("padding-top", "15px")
+    .style("padding-left", "5px")
+    .style("border-top", "1px solid black")
+    .text("Filters")
+
+let filterDropdownLabel = d3.select('.scatterplotSideBar').append('label')
+    .text("Type Filter")
+    .style("margin-left", "20px")
+
+let filtDropdown = filterDropdownLabel.append('select')
+    .attr("class", "filtDropdown")
+    .style("display", "block")
+    .style("margin-bottom", "7px")
+    .style("margin-left", "20px")
+
+filtDropdown.append('option')
+    .text("All")
+    .attr("value", "")
+
+filtDropdown.append('option')
+    .text("Bug")
+    .attr("value", "bug")
+
+filtDropdown.append('option')
+    .text("Dark")
+    .attr("value", "dark")
+
+filtDropdown.append('option')
+    .text("Dragon")
+    .attr("value", "dragon")
+
+filtDropdown.append('option')
+    .text("Electric")
+    .attr("value", "electric")
+
+filtDropdown.append('option')
+    .text("Fairy")
+    .attr("value", "fairy")
+
+filtDropdown.append('option')
+    .text("Fighting")
+    .attr("value", "fighting")
+
+filtDropdown.append('option')
+    .text("Fire")
+    .attr("value", "fire")
+
+filtDropdown.append('option')
+    .text("Flying")
+    .attr("value", "flying")
+
+filtDropdown.append('option')
+    .text("Ghost")
+    .attr("value", "ghost")
+
+filtDropdown.append('option')
+    .text("Grass")
+    .attr("value", "grass")
+
+filtDropdown.append('option')
+    .text("Ground")
+    .attr("value", "ground")
+
+filtDropdown.append('option')
+    .text("Ice")
+    .attr("value", "ice")
+
+filtDropdown.append('option')
+    .text("Normal")
+    .attr("value", "normal")
+
+filtDropdown.append('option')
+    .text("Poison")
+    .attr("value", "poison")
+
+filtDropdown.append('option')
+    .text("Psychic")
+    .attr("value", "psychic")
+
+filtDropdown.append('option')
+    .text("Rock")
+    .attr("value", "rock")
+
+filtDropdown.append('option')
+    .text("Steel")
+    .attr("value", "steel")
+
+filtDropdown.append('option')
+    .text("Water")
+    .attr("value", "water")
+
+let checkboxSingleLabel = d3.select('.scatterplotSideBar').append('label')
+    .text("Single-Type")
+    .style("margin-left", "20px")
+
+let checkboxSingleInput = checkboxSingleLabel.append('input')
+    .attr("type", "checkbox")
+    .attr("checked", "checked")
+    .attr("value", "dual")
+    .style("margin-left", "20px")
+    .style("margin-bottom", "7px")
+    .style("display", "block")
+
+let checkboxDualLabel = d3.select('.scatterplotSideBar').append('label')
+    .text("Dual-Type")
+    .style("margin-left", "20px")
+
+let checkboxDualInput = checkboxDualLabel.append('input')
+    .attr("type", "checkbox")
+    .attr("checked", "checked")
+    .attr("value", "dual")
+    .style("margin-left", "20px")
+    .style("margin-bottom", "7px")
+    .style("display", "block")
+
+</script>
