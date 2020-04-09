@@ -252,8 +252,9 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		let [regressionPoints, regressionLine] = computeRegLine()
 		if (start) {
 			initRegLine(regressionPoints, regressionLine)
+		} else {
+			updateRegLine(regressionPoints, regressionLine)
 		}
-		updateRegLine(regressionPoints, regressionLine)
 
 
 
@@ -372,7 +373,11 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.datum(regressionPoints)
 			.attr('d', regressionLine)
 			.attr('stroke', '#e44040')
-			.attr('stroke-width', 2);
+			.attr('stroke-width', 2)
+			.style('opacity', 0)
+			.transition()
+			.duration(5000)
+				.style("opacity", 1)
 	}
 
 	// Update Regression Line
@@ -383,7 +388,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
             .datum(regressionPoints)
             .transition()
             .duration(5000)
-            .attr("d", regressionLine)
+            	.attr("d", regressionLine)
 	}
 
 
