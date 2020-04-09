@@ -12,29 +12,19 @@ body {
 
 .headerBox {
     background-color: white;
-    /* height: 136px; */
     width: 800px;
     margin: 0 auto;
 }
 
 h1 {
-    color: black;
+    color: #e44040;
     font-size: 120px;
     text-align: center;
     margin: 0;
     padding: 5px;
-    /* padding-top: 239px; */
-    /* padding-top: 30vh; */
-    /* text-shadow: 1px 0px black, -1px 0px black, 0px 1px black, 0px -1px black; */
 }
 
 .splash {
-    /* background-image: url(../img/splash.png);
-    background-color: white;
-    background-size: cover;
-    height: 100vh;
-    width: 100vw;
-    margin: 0; */
     background-image: url(../img/splash.png);
     background-color: white;
     background-size: cover;

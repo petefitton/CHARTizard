@@ -58,8 +58,8 @@ var y = d3.scaleLinear().range([height, 0]);
 var scatterSvg = d3.select(".scatterDiv").append("svg")
 	.attr("width", width + margin.left + margin.right)
 	.attr("height", height + margin.top + margin.bottom)
-	.attr("color", "red")
-	.attr("style", "background-color: #ececec")
+	.attr("color", "black")
+	.attr("style", "background-color: white")
 	.call(responsivefy)
 .append("g")
 	.attr("transform",
@@ -300,6 +300,24 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 				.attr("stop-color", typeColors[type2])
 		}
 	}
+	for (type1 in typeColors) {
+		for (type2 in typeColors) {
+			var linGradDark = defs.append("linearGradient")
+				.attr("id", type1 + type2 + "dark")
+				.attr("x1", 0)
+				.attr("x2", 1)
+				.attr("y1", 0)
+				.attr("y2", 1)
+
+			linGradDark.append("stop")
+				.attr("offset", "0%")
+				.attr("stop-color", hslDarken(typeColors[type1]))
+			
+			linGradDark.append("stop")
+				.attr("offset", "100%")
+				.attr("stop-color", hslDarken(typeColors[type2]))
+		}
+	}
 
 	// set scatterplot Tooltip display to none once it is fully transparent for better user experience (fewer issues with hovering over where tooltip text was which causes cursor issues)
 	let hide = function() {scatterplotTooltip.style("display", "none")}
@@ -308,6 +326,34 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 // -----------------------Function declarations--------------------------------//
 
+
+	// function to darken a point
+	function hslDarken(d) {
+		// check to see if data is an object or a color
+		let tempArr
+		if (typeof d === "string") {
+			tempArr = d.split(",")
+		} else {
+			tempArr = typeColors[d.type1].split(",")
+		}
+		// console.log(tempArr)
+		// console.log(tempArr[2])
+		// console.log(tempArr[2].slice(0,-2))
+		let l = parseInt(tempArr[2].slice(0,-2)) - 4
+		// not needed
+		// if (l < 0) l = 0
+		tempArr[2] = l
+		// console.log(tempArr)
+		// console.log(tempArr[-1])
+		tempArr[tempArr.length - 1] = tempArr[tempArr.length - 1] + "%)"
+		let tempColor = ""
+		for (elem in tempArr) {
+			tempColor += tempArr[elem] + ","
+		}
+		tempColor = tempColor.slice(0,-1) 
+		// console.log(tempColor)
+		return tempColor
+	}
 
 	// handles y Variable dropdown menu change
 	yDropdown.on("change", function() {
@@ -406,6 +452,27 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		x.domain([0, d3.max(tempData, function(d) { return d[xAxisVar]; }) + 5]);
 		y.domain([d3.min(tempData, function(d) { return d[yAxisVar]; }) - 10, d3.max(tempData, function(d) { return d[yAxisVar]; }) + 20]);
 
+		// Add grid
+		grid = scatterSvg.append("g")		
+			.attr("stroke", "currentColor")
+			.attr("stroke-opacity", 0.1)
+		.call(g => g.append("g")
+			.selectAll("line")
+			.data(x.ticks())
+			.join("line")
+				.attr("x1", d => 0.5 + x(d))
+				.attr("x2", d => 0.5 + x(d))
+				.attr("y1", 0)
+				.attr("y2", height))
+		.call(g => g.append("g")
+			.selectAll("line")
+			.data(y.ticks())
+			.join("line")
+				.attr("y1", d => 0.5 + y(d))
+				.attr("y2", d => 0.5 + y(d))
+				.attr("x1", 0)
+				.attr("x2", width))
+
 	//---------------------Regression line-------------------//
 
 		linearRegression = ss.linearRegression(tempData.map(d => [d[xAxisVar], d[yAxisVar]]))
@@ -430,7 +497,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.classed('regressionLine', true)
 			.datum(regressionPoints)
 			.attr('d', regressionLine)
-			.attr('stroke', 'rgb(253, 251, 142)')
+			.attr('stroke', '#e44040')
 			.attr('stroke-width', 2);
 
 
@@ -442,7 +509,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.attr("y", height + "px")
 			.attr("width", "100vw")
 			.attr("height", margin.bottom)
-			.attr("fill", "#ececec")
+			.attr("fill", "white")
 			.style('text-anchor', 'middle')
 			.text(" ")
 
@@ -468,27 +535,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		yAxis = scatterSvg.append("g")
 			.call(d3.axisLeft(y));
 
-		// Add grid
-		grid = scatterSvg.append("g")		
-			.attr("stroke", "currentColor")
-			.attr("stroke-opacity", 0.1)
-		.call(g => g.append("g")
-			.selectAll("line")
-			.data(x.ticks())
-			.join("line")
-				.attr("x1", d => 0.5 + x(d))
-				.attr("x2", d => 0.5 + x(d))
-				.attr("y1", 0)
-				.attr("y2", height))
-		.call(g => g.append("g")
-			.selectAll("line")
-			.data(y.ticks())
-			.join("line")
-				.attr("y1", d => 0.5 + y(d))
-				.attr("y2", d => 0.5 + y(d))
-				.attr("x1", 0)
-				.attr("x2", width))
-
 		// y and x axes names
 		scatterSvg.append('text')
 			.attr("transform", "rotate(-90)")
@@ -512,7 +558,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.attr("y", "-85px")
 			.attr("width", "100vw")
 			.attr("height", 81)
-			.attr("fill", "#ececec")
+			.attr("fill", "white")
 			.style('text-anchor', 'middle')
 			.text(" ")
 
@@ -520,7 +566,8 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		scatterSvg.append('text')
 			.attr("class", "scatterTitle")
 			.attr('x', width / 2)
-			.attr('y', -10)
+			.attr('y', -20)
+			// .attr("fill", "#e44040")
 			.style('font-size', 25)
 			.style('text-anchor', 'middle')
 			.text(filtSingDuelVar + " " + filtVarFormatted + " Pokemon: " + yAxisVarFormatted + " vs. " + xAxisVarFormatted)
@@ -587,7 +634,15 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 					return typeColors[d.type1]
 				}
 				return "url(#" + d.type1 + d.type2 + ")"
-		})
+			})
+			.attr("stroke", function(d) {
+				if (d.type2 === "") {
+					// color is in hsl format
+					return hslDarken(d)
+				}
+				return "url(#" + d.type1 + d.type2 + "dark)"
+			})
+
 	}
 
 
