@@ -30,6 +30,9 @@
 -Grid in D3: https://observablehq.com/@d3/scatterplot-with-shapes
 -Using JS to manipulate colors: https://css-tricks.com/converting-color-spaces-in-javascript/
 -Darken/Lighten colors in JS: https://jonlabelle.com/snippets/view/javascript/lighten-and-darken-colors-in-javascript
+-Text color gradient: https://stackoverflow.com/questions/37831837/gradient-text-color
+-CSS arrow: https://www.w3schools.com/howto/howto_css_arrows.asp
+-Skew and scaleY: https://codepen.io/Mihnutzen/pen/EvpwF
 
 
 ## Chartizard Pitch
