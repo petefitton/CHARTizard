@@ -47,7 +47,7 @@
 
 
 // set/calculate variables for dimensions and margins of scatterplot
-var margin = {top: 60, right: 50, bottom: 60, left: 65},
+var margin = {top: 60, right: 160, bottom: 78, left: 60},
 	width = window.innerWidth - margin.left - margin.right - 30,
 	height = window.innerHeight - margin.top - margin.bottom;
 
@@ -77,15 +77,41 @@ let scatterplotTooltip = d3.select('.scatterDiv').append('div')
 	.style("top", "0px")
 	.style("left", "50%")
 
-let yDropdownLabel = d3.select('.scatterDiv').append('label')
-	.text("Y Variable")
+// SideBar
+let scatterplotSideBar = d3.select('.scatterDiv').append('div')
+	.attr("class", "scatterplotSideBar")
+	.style("height", "100vh")
+	.style("border-left", "2px solid #929292")
+	.style("width", margin.right - 10 + "px")
 	.style("position", "absolute")
-	.style("right", (margin.right / 2) + "px")
-	.style("top", (margin.top / 4) + "px")
+	.style("top", "0px")
+	.style("right", "0px")
+	.style("background-color", "#ececec")
+
+d3.select(".scatterplotSideBar").append('p')
+	.style("text-align", "center")
+	.style("font-size", "25px")
+	.style("border-bottom", "1px solid black")
+	.style("padding-bottom", "5px")
+	.style("margin", "10px auto")
+	.text("Controls")
+
+// Variables section
+d3.select(".scatterplotSideBar").append('p')
+	.style("font-size", "18px")
+	.style("margin-left", "5px")
+	.style("margin-top", "15px")
+	.text("Variables")
+
+let yDropdownLabel = d3.select('.scatterplotSideBar').append('label')
+	.style("margin-left", "20px")
+	.text("Y Variable")
 
 let yDropdown = yDropdownLabel.append('select')
 	.attr("class", "yDropdown")
 	.style("display", "block")
+	.style("margin-left", "20px")
+	.style("margin-bottom", "7px")
 
 yDropdown.append('option')
 	.text("Base Total")
@@ -115,15 +141,14 @@ yDropdown.append('option')
 	.text("Speed")
 	.attr("value", "speed")
 
-let xDropdownLabel = d3.select('.scatterDiv').append('label')
+let xDropdownLabel = d3.select('.scatterplotSideBar').append('label')
 	.text("X Variable")
-	.style("position", "absolute")
-	.style("right", (margin.right * 2.6) + "px")
-	.style("top", (margin.top / 4) + "px")
+	.style("margin-left", "20px")
 
 let xDropdown = xDropdownLabel.append('select')
 	.attr("class", "xDropdown")
 	.style("display", "block")
+	.style("margin-left", "20px")
 
 xDropdown.append('option')
 	.text("Capture Rate")
@@ -137,15 +162,23 @@ xDropdown.append('option')
 	.text("Height M")
 	.attr("value", "height_m")
 
-let filterDropdownLabel = d3.select('.scatterDiv').append('label')
+// Filters section
+d3.select(".scatterplotSideBar").append('p')
+	.style("font-size", "18px")
+	.style("padding-top", "15px")
+	.style("padding-left", "5px")
+	.style("border-top", "1px solid black")
+	.text("Filters")
+
+let filterDropdownLabel = d3.select('.scatterplotSideBar').append('label')
 	.text("Type Filter")
-	.style("position", "absolute")
-	.style("right", (margin.right * 4.8) + "px")
-	.style("top", (margin.top / 4) + "px")
+	.style("margin-left", "20px")
 
 let filtDropdown = filterDropdownLabel.append('select')
 	.attr("class", "filtDropdown")
 	.style("display", "block")
+	.style("margin-bottom", "7px")
+	.style("margin-left", "20px")
 
 filtDropdown.append('option')
 	.text("All")
@@ -223,28 +256,28 @@ filtDropdown.append('option')
 	.text("Water")
 	.attr("value", "water")
 
-let checkboxSingleLabel = d3.select('.scatterDiv').append('label')
+let checkboxSingleLabel = d3.select('.scatterplotSideBar').append('label')
 	.text("Single-Type")
-	.style("position", "absolute")
-	.style("left", (margin.left) + "px")
-	.style("top", (margin.top / 4) + "px")
+	.style("margin-left", "20px")
 
 let checkboxSingleInput = checkboxSingleLabel.append('input')
 	.attr("type", "checkbox")
 	.attr("checked", "checked")
 	.attr("value", "dual")
+	.style("margin-left", "20px")
+	.style("margin-bottom", "7px")
 	.style("display", "block")
 
-let checkboxDualLabel = d3.select('.scatterDiv').append('label')
+let checkboxDualLabel = d3.select('.scatterplotSideBar').append('label')
 	.text("Dual-Type")
-	.style("position", "absolute")
-	.style("left", (margin.left * 2.5) + "px")
-	.style("top", (margin.top / 4) + "px")
+	.style("margin-left", "20px")
 
 let checkboxDualInput = checkboxDualLabel.append('input')
 	.attr("type", "checkbox")
 	.attr("checked", "checked")
 	.attr("value", "dual")
+	.style("margin-left", "20px")
+	.style("margin-bottom", "7px")
 	.style("display", "block")
 
 
@@ -538,7 +571,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 		scatterSvg.append('text')
 			.attr('x', width / 2)
-			.attr('y', height + margin.bottom / 1.5)
+			.attr('y', height + margin.bottom / 2)
 			.style('font-size', 20)
 			.style('text-anchor', 'middle')
 			.text(xAxisVarFormatted)

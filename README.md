@@ -33,6 +33,7 @@
 -Text color gradient: https://stackoverflow.com/questions/37831837/gradient-text-color
 -CSS arrow: https://www.w3schools.com/howto/howto_css_arrows.asp
 -Skew and scaleY: https://codepen.io/Mihnutzen/pen/EvpwF
+-Scroll behavior smooth: https://stackoverflow.com/questions/7717527/smooth-scrolling-when-clicking-an-anchor-link
 
 
 ## Chartizard Pitch
