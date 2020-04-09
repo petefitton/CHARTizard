@@ -28,6 +28,8 @@
 -Adding background to text inside an SVG: https://stackoverflow.com/questions/15500894/background-color-of-text-in-svg
 -Checkboxes in D3: https://bl.ocks.org/johnnygizmo/3d593d3bf631e102a2dbee64f62d9de4
 -Grid in D3: https://observablehq.com/@d3/scatterplot-with-shapes
+-Using JS to manipulate colors: https://css-tricks.com/converting-color-spaces-in-javascript/
+-Darken/Lighten colors in JS: https://jonlabelle.com/snippets/view/javascript/lighten-and-darken-colors-in-javascript
 
 
 ## Chartizard Pitch

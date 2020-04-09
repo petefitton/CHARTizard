@@ -17,6 +17,7 @@
 	// defs/linearGradients/stops for coloring dots
 	// hide/hidehandler
 // Function declarations
+	// hslDarken
 	// y dropdown menu handler
 	// x dropdown menu handler
 	// checkbox handlers
@@ -252,10 +253,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 // -----------------------Variable declarations and processing--------------------------------//
 
-	// Test filtering data (remove all pokemon from data that have capture_rate === 120)
-	// data = data.filter(function(d){ return d.capture_rate != "120" })
-	// data = data.filter(function(d){ return d.type2 === "fire"})
-
 	// format data from strings to numbers
 	data.forEach(function(d) {
 		d.capture_rate = +d.capture_rate;
@@ -329,30 +326,25 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	// function to darken a point
 	function hslDarken(d) {
-		// check to see if data is an object or a color
+		// check to see if data is an object or a color and split the color on comma
 		let tempArr
 		if (typeof d === "string") {
 			tempArr = d.split(",")
 		} else {
 			tempArr = typeColors[d.type1].split(",")
 		}
-		// console.log(tempArr)
-		// console.log(tempArr[2])
-		// console.log(tempArr[2].slice(0,-2))
+
+		// darken light value from hsl color by 4%
 		let l = parseInt(tempArr[2].slice(0,-2)) - 4
-		// not needed
-		// if (l < 0) l = 0
 		tempArr[2] = l
-		// console.log(tempArr)
-		// console.log(tempArr[-1])
 		tempArr[tempArr.length - 1] = tempArr[tempArr.length - 1] + "%)"
+
+		// stringify color from array back into hsl format
 		let tempColor = ""
 		for (elem in tempArr) {
 			tempColor += tempArr[elem] + ","
 		}
-		tempColor = tempColor.slice(0,-1) 
-		// console.log(tempColor)
-		return tempColor
+		return tempColor.slice(0,-1)
 	}
 
 	// handles y Variable dropdown menu change
@@ -567,7 +559,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.attr("class", "scatterTitle")
 			.attr('x', width / 2)
 			.attr('y', -20)
-			// .attr("fill", "#e44040")
 			.style('font-size', 25)
 			.style('text-anchor', 'middle')
 			.text(filtSingDuelVar + " " + filtVarFormatted + " Pokemon: " + yAxisVarFormatted + " vs. " + xAxisVarFormatted)
