@@ -417,8 +417,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	function updateScatter(xAxisVar, yAxisVar, filtVar) {
 
-		// remove all information that could be changed
-		exitDots()
+		// remove all information that could be changed except for dots which follow after filtering
 		scatterSvg.selectAll('text')
 			.data([])
 			.exit()
@@ -530,20 +529,13 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 		// rect that blocks out regression line passing through x axis
 		scatterSvg.append('rect')
-			.attr("x", "0px")
+			.attr("x", "80px")
 			.attr("y", height + "px")
 			.attr("width", "100vw")
 			.attr("height", margin.bottom)
 			.attr("fill", "white")
 			.style('text-anchor', 'middle')
 			.text(" ")
-
-		//Keeping these comments for now
-		// updatePoints(groupData);
-		// enterPoints(groupData);
-		// exitPoints(groupData);
-		// var group = e.target.value;
-		// var groupData = getFilteredData(data, group);
 
 		// format x and y axes for display in tooltips and axes
 		let [xAxisVarFormatted, yAxisVarFormatted, filtVarFormatted] = varNameFormat(xAxisVar, yAxisVar, filtVar)
@@ -619,9 +611,10 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	// Add all dots for the scatterplot
 	function enterDots(data, xAxisVarFormatted, yAxisVarFormatted) {
-		scatterSvg.selectAll("dot")
-			.data(data)
-		.enter().append("circle")
+		scatterSvg.selectAll("circle")
+			.data(data, d => d.name)
+	.join(
+		enter => enter.append("circle")
 			.on("mouseover", function(d, i) { // show it and update html
 				if (hideHandler) {
 					clearTimeout(hideHandler)
@@ -651,8 +644,8 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 				hideHandler = setTimeout(hide, 550)
 			})
 			.attr("r", 5)
-			.attr("cx", function(d) { return x(d[xAxisVar]); })
-			.attr("cy", function(d) { return y(d[yAxisVar]); })
+			.attr("cx", 0)
+			.attr("cy", height)
 			.attr("fill", function(d) {
 				if (d.type2 === "") {
 					return typeColors[d.type1]
@@ -666,16 +659,52 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 				}
 				return "url(#" + d.type1 + d.type2 + "dark)"
 			})
-
+			.call(enter => enter
+				.transition()
+				.duration(5000)
+				.attr("cx", function(d) { return x(d[xAxisVar]); })
+				.attr("cy", function(d) { return y(d[yAxisVar]); })
+				),
+				// .merge(scatterSvg.selectAll("circle").data(data))
+			update => update
+			.call(update => update
+				.transition()
+				.duration(5000)
+				.attr("cx", d => x(d[xAxisVar]))
+				.attr("cy", d => y(d[yAxisVar]))
+				),
+			exit => exit
+			.call(exit => exit
+				.transition()
+				.duration(5000)
+				.attr("cx", 0)
+				.attr("cy", height)
+				.remove()
+				)
+			)
 	}
 
+	// function updateDots(data) {
+	// 	scatterSvg.selectAll("circle")
+	// 		.data(data)
+	// 		.transition()
+	// 		.duration(5000)
+	// 		.attr("cx", function(d) { return x(d[xAxisVar]); })
+	// 		.attr("cy", function(d) { return y(d[yAxisVar]); })
+	// 		// .merge()
+	// }
 
-	function exitDots() {
-		scatterSvg.selectAll("circle")
-			.data([])
-			.exit()
-			.remove();
-	}
+
+	// function exitDots(data) {
+	// 	scatterSvg.selectAll("circle")
+	// 		.data(data)
+	// 		.exit()
+	// 		.transition()
+	// 		.attr("cx", 0)
+	// 		.attr("cy", height)
+	// 		.duration(5000)
+	// 		.remove();
+	// }
 
 
 

@@ -3,6 +3,8 @@
 -Charizard Image: https://cdn.weasyl.com/static/media/52/67/7f/52677ffe59d86ec32b87cd11ea45ce45e15ec6fb855237776c922b45ac02214b.png
 
 
+-D3 Documentation: https://github.com/d3/d3/blob/master/API.md
+-D3 Github: https://github.com/d3
 -General Tutorial: https://www.freecodecamp.org/news/a-visual-reference-for-d3/
 -Scatterplot Tutorial: https://bl.ocks.org/d3noob/a44d21b304b9f7260a284b1883232002
 -Making D3 responsive: https://brendansudol.com/writing/responsive-d3
@@ -36,6 +38,9 @@
 -CSS arrow: https://www.w3schools.com/howto/howto_css_arrows.asp
 -Skew and scaleY: https://codepen.io/Mihnutzen/pen/EvpwF
 -Scroll behavior smooth: https://stackoverflow.com/questions/7717527/smooth-scrolling-when-clicking-an-anchor-link
+-D3 join: https://observablehq.com/@d3/selection-join
+-D3 join: https://github.com/d3/d3-selection/blob/v1.4.1/README.md#joining-data
+-D3 update pattern: https://www.dashingd3js.com/lessons/d3-basic-general-update-pattern
 
 
 ## Chartizard Pitch
