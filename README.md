@@ -41,6 +41,7 @@
 -D3 join: https://observablehq.com/@d3/selection-join
 -D3 join: https://github.com/d3/d3-selection/blob/v1.4.1/README.md#joining-data
 -D3 update pattern: https://www.dashingd3js.com/lessons/d3-basic-general-update-pattern
+-D3 example regression line animation: https://bl.ocks.org/ctufts/674ece47de093f6e0cd5af22d7ee9b9b
 
 
 ## Chartizard Pitch

@@ -177,11 +177,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.data([])
 			.exit()
 			.remove()
-		
-		// scatterSvg.select('.regressionLine')
-		// 	.data([])
-		// 	.exit()
-		// 	.remove()
 
 		if (xAxis) {
 			xAxis.data([]).exit().remove()
@@ -254,36 +249,13 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	//---------------------Regression line-------------------//
 
-		// linearRegression = ss.linearRegression(tempData.map(d => [d[xAxisVar], d[yAxisVar]]))
-
-		// linearRegressionLine = ss.linearRegressionLine(linearRegression)
-
-		// let firstX = d3.min(tempData, function(d) { return d[xAxisVar]; });
-		// let lastX = d3.max(tempData, function(d) { return d[xAxisVar]; });
-		// let xCoordinates = [firstX, lastX];
-
-		// // these x and y keys coordinate with the line variable below
-		// let regressionPoints = xCoordinates.map(d => ({
-		// 	x: d,
-		// 	y: linearRegressionLine(d)
-		// }));
-		
-		// regressionLine = d3.line()
-		// 	.x(d => x(d.x))
-		// 	.y(d => y(d.y))
-
-		// scatterSvg.append('path')
-		// 	.classed('regressionLine', true)
-		// 	.datum(regressionPoints)
-		// 	.attr('d', regressionLine)
-		// 	.attr('stroke', '#e44040')
-		// 	.attr('stroke-width', 2);
-
 		let [regressionPoints, regressionLine] = computeRegLine()
 		if (start) {
 			initRegLine(regressionPoints, regressionLine)
 		}
 		updateRegLine(regressionPoints, regressionLine)
+
+
 
 
 		// rect that blocks out regression line passing through x axis
@@ -369,6 +341,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	}
 
 
+	// Compute Regression Line
 	function computeRegLine() {
 
 		linearRegression = ss.linearRegression(tempData.map(d => [d[xAxisVar], d[yAxisVar]]))
@@ -389,15 +362,10 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.x(d => x(d.x))
 			.y(d => y(d.y))
 
-		// scatterSvg.append('path')
-		// 	.classed('regressionLine', true)
-		// 	.datum(regressionPoints)
-		// 	.attr('d', regressionLine)
-		// 	.attr('stroke', '#e44040')
-		// 	.attr('stroke-width', 2)
 		return [regressionPoints, regressionLine]
 	}
 
+	// Initialize/Create Regression Line
 	function initRegLine(regressionPoints, regressionLine) {
 		scatterSvg.append('path')
 			.classed('regressionLine', true)
@@ -410,30 +378,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	// Update Regression Line
 	function updateRegLine(regressionPoints, regressionLine) {
 
-		// linearRegression = ss.linearRegression(tempData.map(d => [d[xAxisVar], d[yAxisVar]]))
-
-		// linearRegressionLine = ss.linearRegressionLine(linearRegression)
-
-		// let firstX = d3.min(tempData, function(d) { return d[xAxisVar]; });
-		// let lastX = d3.max(tempData, function(d) { return d[xAxisVar]; });
-		// let xCoordinates = [firstX, lastX];
-
-		// // these x and y keys coordinate with the line variable below
-		// let regressionPoints = xCoordinates.map(d => ({
-		// 	x: d,
-		// 	y: linearRegressionLine(d)
-		// }));
-
-		// regressionLine = d3.line()
-		// 	.x(d => x(d.x))
-		// 	.y(d => y(d.y))
-
-		// scatterSvg.append('path')
-		// 	.classed('regressionLine', true)
-		// 	.datum(regressionPoints)
-		// 	.attr('d', regressionLine)
-		// 	.attr('stroke', '#e44040')
-		// 	.attr('stroke-width', 2);
 		scatterSvg.select("path")
 			.classed('regressionLine', true)
             .datum(regressionPoints)
@@ -447,7 +391,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	function enterDots(data, xAxisVarFormatted, yAxisVarFormatted) {
 		scatterSvg.selectAll("circle")
 			.data(data, d => d.name)
-	.join(
+		.join(
 		enter => enter.append("circle")
 			.on("mouseover", function(d, i) { // show it and update html
 				if (hideHandler) {
@@ -493,37 +437,34 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 				}
 				return "url(#" + d.type1 + d.type2 + "dark)"
 			})
-			.call(enter => enter
-				.transition()
-				.duration(5000)
-				.attr("cx", function(d) { return x(d[xAxisVar]); })
-				.attr("cy", function(d) { return y(d[yAxisVar]); })
-				),
-			update => update
-			.call(update => update
-				.transition()
-				.duration(5000)
-				.attr("cx", d => x(d[xAxisVar]))
-				.attr("cy", d => y(d[yAxisVar]))
-				),
-			exit => exit
-			.call(exit => exit
-				.transition()
-				.duration(5000)
-				.attr("cx", 0)
-				.attr("cy", height)
-				.remove()
-				)
+		.call(enter => enter
+			.transition()
+			.duration(5000)
+			.attr("cx", function(d) { return x(d[xAxisVar]); })
+			.attr("cy", function(d) { return y(d[yAxisVar]); })
+			),
+		update => update
+		.call(update => update
+			.transition()
+			.duration(5000)
+			.attr("cx", d => x(d[xAxisVar]))
+			.attr("cy", d => y(d[yAxisVar]))
+			),
+		exit => exit
+		.call(exit => exit
+			.transition()
+			.duration(5000)
+			.attr("cx", 0)
+			.attr("cy", height)
+			.remove()
 			)
+		)
 	}
-
 
 
 // -------------------Run initializations/Function calls------------------------//
 
 	updateScatter(xAxisVar, yAxisVar, filtVar, start=true)
-	computeRegLine()
-	// initRegLine(regressionPoints, regressionLine)
 
 });
 </script>
