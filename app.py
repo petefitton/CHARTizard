@@ -10,5 +10,9 @@ app = Flask(__name__)
 data_file = './static/data/pokemon.csv'
 
 @app.route('/')
+def landing():
+    return render_template('landing.html', data=analysis.export(data_file), dat=analysis2.export(data_file))
+
+@app.route('/chartizard')
 def index():
     return render_template('index.html', data=analysis.export(data_file), dat=analysis2.export(data_file))

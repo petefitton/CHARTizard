@@ -1,3 +1,18 @@
+# Deployed Website
+
+Live Website can be found here:
+
+# Screenshots
+
+# Technologies Used
+
+# General Approach to Project/Experience with it/Reflection
+
+# Installation instructions for dependencies
+
+
+
+
 # Sources
 -Splash Image: https://i.redd.it/gqnzk6788v411.png https://www.reddit.com/r/wimmelbilder/comments/8s55wz/pokemon_color_spectrum_featuring_all_pokemon_in/
 -Charizard Image: https://cdn.weasyl.com/static/media/52/67/7f/52677ffe59d86ec32b87cd11ea45ce45e15ec6fb855237776c922b45ac02214b.png
@@ -50,7 +65,7 @@
 -Example of scrolling color gradient: https://codepen.io/nohoid/pen/kIfto
 
 
-## Chartizard Pitch
+# Chartizard Pitch
 ----
 ### Elevator Pitch
 Single page website that displays beautiful, interactive charts concerning Pokemon.

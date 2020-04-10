@@ -1,6 +1,37 @@
 html {
     background-color: white;
     scroll-behavior: smooth;
+    font-family: 'Roboto', sans-serif;
+}
+
+.landingText {
+    color: white;
+    margin: 0 auto;
+    text-align: center;
+    font-family: 'Archivo Black', sans-serif;
+    margin-bottom: 10px
+}
+
+.landingBtn {
+    margin: 10px auto;
+    font-size: large;
+    border-radius: 4px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.landingDiv {
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+}
+
+.landingContainer {
+    margin: 0 auto;
+    padding-top: 20vh;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 body {
@@ -30,16 +61,25 @@ h1 {
     }
 }
 @media (max-width: 500px) {
+    html {
+        font-size: 10px
+    }
     h1 {
         font-size: 60px;
     }
 }
 @media (max-width: 350px) {
+    html {
+        font-size: 8px
+    }
     h1 {
         font-size: 40px;
     }
 }
 @media (max-width: 250px) {
+    html {
+        font-size: 7px
+    }
     h1 {
         font-size: 20px;
     }
