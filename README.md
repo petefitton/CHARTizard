@@ -45,6 +45,9 @@
 -Simple Statistics Documentation: https://simplestatistics.org/docs/#linearregression
 -Axis transition Example: https://bl.ocks.org/HarryStevens/678935d06d4601c25cb141bacd4068ce
 -Scroll event Documentation: https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event
+-CSS Animation Documentation: https://www.w3schools.com/css/css3_animations.asp
+-CSS Animation Documentation: https://drafts.csswg.org/css-animations/
+-Example of scrolling color gradient: https://codepen.io/nohoid/pen/kIfto
 
 
 ## Chartizard Pitch
