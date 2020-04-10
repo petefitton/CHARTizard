@@ -4,7 +4,10 @@
 
 // Setup size of svg/dimensions
 // Setup domain of x and y
+// Setup x and y axes
+// Create scatterSvg
 // Setup scatterplotTooltip
+// Setup SideBar
 // Setup dropdown menus & checkboxes
 
 
@@ -14,10 +17,11 @@ var margin = {top: 60, right: 160, bottom: 78, left: 60},
     width = window.innerWidth - margin.left - margin.right - 30,
     height = window.innerHeight - margin.top - margin.bottom;
 
-// set the ranges of x and y axes
+// Initialize/Set the ranges of x and y axes
 var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
+// Initialize x and y axes
 var xAxis = d3.axisBottom().scale(x)
 var yAxis = d3.axisLeft().scale(y)
 

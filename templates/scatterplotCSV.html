@@ -60,8 +60,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	let filtVar = ""
 	let filtSingDuelVar = ""
 
-	// let xAxis
-	// let yAxis
 	let tempData
 	let grid
 
@@ -172,22 +170,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 	function updateScatter(xAxisVar, yAxisVar, filtVar, start=false) {
 
-		// remove all information that could be changed except for dots which follow after filtering
-		// scatterSvg.selectAll('text')
-		// 	.data([])
-		// 	.exit()
-		// 	.remove()
-
-		// if (xAxis) {
-		// 	xAxis.data([]).exit().remove()
-		// }
-		// if (yAxis) {
-		// 	yAxis.data([]).exit().remove()
-		// }
-		// if (grid) {
-		// 	grid.data([]).exit().remove()
-		// }
-
 		// reset tempData to be equal to data
 		tempData = data
 
@@ -257,7 +239,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		grid.data([]).exit()
 		.transition()
 		.duration(1500)
-			// .attr("stroke", "currentColor")
 			.attr("stroke-opacity", 0)
 			.remove()
 		
@@ -305,15 +286,6 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 
 
-		// rect that blocks out regression line passing through x axis
-		// scatterSvg.append('rect')
-		// 	.attr("x", "80px")
-		// 	.attr("y", height + "px")
-		// 	.attr("width", "100vw")
-		// 	.attr("height", margin.bottom)
-		// 	.attr("fill", "white")
-		// 	.style('text-anchor', 'middle')
-		// 	.text(" ")
 
 		// format x and y axes for display in tooltips and axes
 		let [xAxisVarFormatted, yAxisVarFormatted, filtVarFormatted] = varNameFormat(xAxisVar, yAxisVar, filtVar)
@@ -321,10 +293,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		// create all new dots with correct location
 		enterDots(tempData, xAxisVarFormatted, yAxisVarFormatted)
 
-		// xAxis.scale(x)
-		// yAxis.scale(y)
-// let breaker = d3.interpolate(x)
-// console.log(breaker)
+
 		if (start) {
 			// Add x Axis
 			scatterSvg.append("g")
@@ -335,6 +304,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.duration(4000)
 				.style("opacity", 1)
 				.call(xAxis)
+
 			// Add y Axis
 			scatterSvg.append("g")
 				.attr("class", "yAxis")
@@ -344,11 +314,13 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 				.style("opacity", 1)
 				.call(yAxis);
 		} else {
+			// Update x Axis
 			scatterSvg.select(".xAxis")
 				.transition()
 				.duration(5000)
 				.call(xAxis)
 
+			// Update y Axis
 			scatterSvg.select(".yAxis")
 				.transition()
 				.duration(5000)
@@ -356,7 +328,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		}
 
 		if (start) {
-			// y and x axes names
+			// Set x axis name
 			scatterSvg.append('text')
 				.attr("class", "xAxisName")
 				.attr('x', width / 2)
@@ -369,6 +341,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 				.style("opacity", 1)
 				.text(xAxisVarFormatted)
 
+			// Set y axis name
 			scatterSvg.append('text')
 				.attr("class", "yAxisName")
 				.attr("transform", "rotate(-90)")
@@ -382,7 +355,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 				.style("opacity", 1)
 				.text(yAxisVarFormatted)
 		} else {
-			// update y and x axes names
+			// Update x axis name
 			d3.select(".xAxisName")
 				.transition()
 				.duration(1000)
@@ -392,6 +365,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 					.style("opacity", 1)
 					.text(xAxisVarFormatted)
 
+			// Update y axis name
 			d3.select(".yAxisName")
 				.transition()
 				.duration(1000)
@@ -403,18 +377,8 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 		}
 
 
-		// rect that blocks out regression line passing through title
-		// scatterSvg.append('rect')
-		// 	.attr("x", "0px")
-		// 	.attr("y", "-85px")
-		// 	.attr("width", "100vw")
-		// 	.attr("height", 81)
-		// 	.attr("fill", "white")
-		// 	.style('text-anchor', 'middle')
-		// 	.text(" ")
-
 		if (start) {
-		// set title of scatterplot
+		// Set title of scatterplot
 		scatterSvg.append('text')
 			.attr("class", "scatterTitle")
 			.attr('x', width / 2)
@@ -427,6 +391,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			.style("opacity", 1)
 			.text(filtSingDuelVar + " " + filtVarFormatted + " Pokemon: " + yAxisVarFormatted + " vs. " + xAxisVarFormatted)
 		} else {
+		// Update title of scatterplot
 		d3.select(".scatterTitle")
 			.transition()
 			.duration(1000)
@@ -476,38 +441,27 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			y: linearRegressionLine(d)
 		}));
 
-		// let xMax = width
-		// let xMin = d3.min(tempData, function(d) { return d[xAxisVar] })
 		let yMax = d3.max(tempData, function(d) { return d[yAxisVar]; })
-		// let yMin = 0
-// console.log(yMax)
+
 		for (point of regressionPoints) {
-			// console.log('point.y: ' + point.y)
-			// console.log('full point: ' + JSON.stringify(point))
 			if (point.y < 0) {
 				// y = mx + b
 				// m is slope
 				// b is intersect
-				// interpolate x value for y equal to 0
+				// interpolate x value for y equal to 0 for regression line
 				// return new coordinates
 				point.y = linearRegression.b
 				point.x = 0
-				// console.log(point.y)
 				continue
 			}
 			if (point.y > yMax) {
 				// x = (y-b)/m
-				// console.log("hitting herererere")
+				// interpolate x value for y at yMax value for regression line
 				point.y = yMax
-				// console.log(point.y)
 				point.x = (yMax - linearRegression.b)/linearRegression.m
-				// console.log(point.x)
 				continue
 			}
-			// console.log('point.y: ' + point.y)
-			// console.log('full point: ' + JSON.stringify(point))
 		}
-		// console.log(regressionPoints)
 
 		regressionLine = d3.line()
 			.x(d => x(d.x))
