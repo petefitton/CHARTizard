@@ -48,60 +48,52 @@ h1 {
 .headerh1 {
     background-image: linear-gradient(100deg, rgb(84, 201, 212), rgb(204, 70, 159), rgb(180, 20, 20), rgb(212, 119, 37), rgb(114, 112, 76), rgb(205, 185, 10), rgb(9, 141, 20), rgb(143, 157, 216), rgb(59, 65, 186), rgb(117, 29, 140), rgb(134, 131, 131), rgb(34, 29, 0) 90%);
     color: transparent;
-    -webkit-background-clip: text;
     background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -o-background-clip: text;
     width: min-content;
-/* }
-.headerh1 {  */
-    /* height: 100%;
-    width: 100%; */
-    /* left:0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    position: absolute; */
-  /* background-image: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3); */
-  background-size: 3000% 3000%;
-  /* background-position: absolute 0, 0, 0, 0; */
-  
-  /* -webkit-animation: rainbow 18s ease infinite;
-  -z-animation: rainbow 18s ease infinite;
-  -o-animation: rainbow 18s ease infinite; */
+    background-size: 3000% 3000%;
+    -webkit-animation: rainbow 30s linear infinite;
+    -moz-animation: rainbow 30s linear infinite;
+    -o-animation: rainbow 30s linear infinite;
     animation: rainbow 30s linear infinite;
     animation-delay: 6s;
+    -webkit-animation-delay: 6s;
+    -moz-animation-delay: 6s;
+    -o-animation-delay: 6s;
     animation-fill-mode: backwards;
+    -webkit-animation-fill-mode: backwards;
+    -moz-animation-fill-mode: backwards;
+    -o-animation-fill-mode: backwards;
 }
-  
-  /* @-webkit-keyframes rainbow {
-      0%{background-position:0% 82%}
-      50%{background-position:100% 19%}
-      100%{background-position:0% 82%}
-  }
-  @-moz-keyframes rainbow {
-      0%{background-position:0% 82%}
-      50%{background-position:100% 19%}
-      100%{background-position:0% 82%}
-  }
-  @-o-keyframes rainbow {
-      0%{background-position:0% 82%}
-      50%{background-position:100% 19%}
-      100%{background-position:0% 82%}
-  } */
-  @keyframes rainbow { 
-      0%{background-position:0%}
-      50%{background-position:100%}
-      100%{background-position:0%}
-  }
+@-webkit-keyframes rainbow {
+    0%{background-position:0%}
+    50%{background-position:100%}
+    100%{background-position:0%}
+}
+@-moz-keyframes rainbow {
+    0%{background-position:0%}
+    50%{background-position:100%}
+    100%{background-position:0%}
+}
+@-o-keyframes rainbow {
+    0%{background-position:0%}
+    50%{background-position:100%}
+    100%{background-position:0%}
+}
+@keyframes rainbow { 
+    0%{background-position:0%}
+    50%{background-position:100%}
+    100%{background-position:0%}
+}
 
 .splash {
     height: 100vh;
     width: 100vw;
     margin: 0;
 }
-@keyframes example {
-    from {opacity: 0;}
-    to {opacity: 0.65;}
-}
+
 .backgroundImg {
     background-image: url(../img/splash.png);
     background-size: cover;
@@ -111,11 +103,39 @@ h1 {
     z-index: -2;
     position: absolute;
     opacity: 0;
-    animation-name: example;
+    animation-name: fade-in;
+    -webkit-animation-name: fade-in;
+    -moz-animation-name: fade-in;
+    -o-animation-name: fade-in;
     animation-delay: 1s;
+    -webkit-animation-delay: 1s;
+    -moz-animation-delay: 1s;
+    -o-animation-delay: 1s;
     animation-duration: 6s;
+    -webkit-animation-duration: 6s;
+    -moz-animation-duration: 6s;
+    -o-animation-duration: 6s;
     animation-fill-mode: forwards;
-} 
+    -webkit-animation-fill-mode: forwards;
+    -moz-animation-fill-mode: forwards;
+    -o-animation-fill-mode: forwards;
+}
+@-webkit-keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 0.65;}
+}
+@-moz-keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 0.65;}
+}
+@-o-keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 0.65;}
+}
+@keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 0.65;}
+}
 
 .toSecondPage {
     left: 48%;
