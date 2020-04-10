@@ -42,6 +42,8 @@
 -D3 join: https://github.com/d3/d3-selection/blob/v1.4.1/README.md#joining-data
 -D3 update pattern: https://www.dashingd3js.com/lessons/d3-basic-general-update-pattern
 -D3 example regression line animation: https://bl.ocks.org/ctufts/674ece47de093f6e0cd5af22d7ee9b9b
+-Simple Statistics Documentation: https://simplestatistics.org/docs/#linearregression
+-Axis transition Example: https://bl.ocks.org/HarryStevens/678935d06d4601c25cb141bacd4068ce
 
 
 ## Chartizard Pitch

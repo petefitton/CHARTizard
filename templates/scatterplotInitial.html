@@ -18,6 +18,9 @@ var margin = {top: 60, right: 160, bottom: 78, left: 60},
 var x = d3.scaleLinear().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
 
+var xAxis = d3.axisBottom().scale(x)
+var yAxis = d3.axisLeft().scale(y)
+
 // scatterSvg create and setup + group element create/append that sets area to start in the corner with margins applied
 var scatterSvg = d3.select(".scatterDiv").append("svg")
     .attr("width", width + margin.left + margin.right)
