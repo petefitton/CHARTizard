@@ -601,7 +601,23 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 
 // -------------------Run initializations/Function calls------------------------//
 
-	updateScatter(xAxisVar, yAxisVar, filtVar, start=true)
+	// Initialize scatterplot once user has scrolled to the second page fully
+	let ticking = false
+	let scrollPos = 0
+
+	let scrollEvent = window.addEventListener("scroll", function(e) {
+		scrollPos = window.scrollY
+
+		if (!ticking) {
+			ticking = false;
+
+			if (scrollPos >= window.innerHeight) {
+				setTimeout(updateScatter(xAxisVar, yAxisVar, filtVar, start=true), 200);
+				window.removeEventListener("scroll", scrollEvent)
+			ticking = true
+			}
+		}
+	})
 
 });
 </script>

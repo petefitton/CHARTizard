@@ -44,6 +44,7 @@
 -D3 example regression line animation: https://bl.ocks.org/ctufts/674ece47de093f6e0cd5af22d7ee9b9b
 -Simple Statistics Documentation: https://simplestatistics.org/docs/#linearregression
 -Axis transition Example: https://bl.ocks.org/HarryStevens/678935d06d4601c25cb141bacd4068ce
+-Scroll event Documentation: https://developer.mozilla.org/en-US/docs/Web/API/Document/scroll_event
 
 
 ## Chartizard Pitch
