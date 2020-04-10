@@ -554,6 +554,34 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			),
 		update => update
 		.call(update => update
+		.on("mouseover", function(d, i) { // show it and update html
+				if (hideHandler) {
+					clearTimeout(hideHandler)
+				}
+
+				let html = "<span class='tooltiptext'>" + "<b>" + d.name + "</b>" + "<br/>" + xAxisVarFormatted + ": " + d[xAxisVar] + "<br/>" + yAxisVarFormatted + ": " + d[yAxisVar]
+
+				scatterplotTooltip.style("display", "block").html(html)
+					.transition()
+					.duration(500)
+					.style("opacity", .9);
+			})
+			.on("mousemove", function(d, i) {
+				let tempHeight = d3.select(".scatterplotTooltip").node().getBoundingClientRect().height
+				let tempWidth = d3.select(".scatterplotTooltip").node().getBoundingClientRect().width
+				console.log(tempHeight)
+				
+				scatterplotTooltip
+					.style("left", (d3.event.offsetX - (tempWidth / 2) - 0.5) + "px")
+					.style("top", (d3.event.offsetY - tempHeight - 12) + "px");
+			})
+			.on("mouseout", function(d, i) {
+				scatterplotTooltip.transition()
+					.duration(500)
+					.style("opacity", 0)
+
+				hideHandler = setTimeout(hide, 550)
+			})
 			.transition()
 			.duration(5000)
 			.attr("cx", d => x(d[xAxisVar]))
