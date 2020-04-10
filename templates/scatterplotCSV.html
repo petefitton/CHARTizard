@@ -612,7 +612,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 			ticking = false;
 
 			if (scrollPos >= window.innerHeight) {
-				setTimeout(updateScatter(xAxisVar, yAxisVar, filtVar, start=true), 200);
+				updateScatter(xAxisVar, yAxisVar, filtVar, start=true)
 				window.removeEventListener("scroll", scrollEvent)
 			ticking = true
 			}
