@@ -82,7 +82,7 @@ I also spent a bit more time on the design of this website than on previous proj
 -Example of scrolling color gradient: https://codepen.io/nohoid/pen/kIfto
 -Seizure Warning example: https://en.wikipedia.org/wiki/Template:Seizure_warning
 -Force Landscope Mode on Mobile: https://stackoverflow.com/questions/14360581/force-landscape-orientation-mode
-
+-Frozen Flask Deployment Issue: https://www.reddit.com/r/flask/comments/335cyi/a_problem_with_frozenflask/
 
 # Chartizard Pitch
 ----
