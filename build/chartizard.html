@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CHARTizard</title>
+	<link rel="icon" href="../static/img/CHARTizardLogo.png" type="image/png">
+	<link rel="stylesheet" href="../static/css/style.css" type="text/css">
+	<link href="https://fonts.googleapis.com/css2?family=Archivo+Black|Roboto:400,700&display=swap" rel="stylesheet">
+	<link rel="manifest" href="../static/manifest.json">
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script src='https://unpkg.com/simple-statistics@7.0.8/dist/simple-statistics.min.js'></script>
+</head>
+<body>
+	<div class="splash" id="splash">
+		<div class="backgroundImg"></div>
+		<div class="headerBoxContainer">
+			<div class="headerBox">
+				<h1 class="headerh1">CHARTizard</h1>
+			</div>
+		</div>
+		<a href="#scatterDiv"><i class="down toSecondPage"></i></a>
+	</div>
+	<div class="secondPage">
+		<div class="scatterDiv" id="scatterDiv"></div>
+		<a href="#footer"><i class="down toFooter"></i></a>
+	</div>
+	
+	<script>
+let typeColors = {
+	"bug": "hsl(66.3,70.4%,42.4%)",
+	"dark": "hsl(24,21.7%,36.1%)",
+	"dragon": "hsl(257.5,93.2%,59.6%)",
+	"electric": "hsl(48,93.5%,58%)",
+	"fairy": "hsl(346.6,71.4%,76.7%)",
+	"fighting": "hsl(3.2,65.5%,45.5%)",
+	"fire": "hsl(25,86.5%,56.5%)",
+	"flying": "hsl(255,76.2%,75.3%)",
+	"ghost": "hsl(262.5,26.7%,47.1%)",
+	"grass": "hsl(100,52.2%,54.9%)",
+	"ground": "hsl(44,65.9%,64.3%)",
+	"ice": "hsl(180,45.1%,72.2%)",
+	"normal": "hsl(60,21.6%,56.5%)",
+	"poison": "hsl(300,42.9%,43.9%)",
+	"psychic": "hsl(342,92%,65.9%)",
+	"rock": "hsl(48.8,53.3%,47.1%)",
+	"steel": "hsl(240,20.3%,76.9%)",
+	"water": "hsl(222.4,81.9%,67.5%)",
+}
+</script>
+
+	<script>
+
+// credit for this function goes to: https://brendansudol.com/writing/responsive-d3
+// function makes charts responsive to window dimensions/resizing
+function responsivefy(svg) {
+    
+	// set the container's width & height equal to the SVG width & height
+    var container = d3.select(svg.node().parentNode),
+        width = parseInt(svg.style("width")),
+        height = parseInt(svg.style("height")),
+        aspect = width / height;
+
+	// assign values for viewBox and preserveAspectRatio properties
+    // call resize so that svg resizes on inital page load
+    svg.attr("viewBox", "0 0 " + width + " " + height)
+        .attr("perserveAspectRatio", "xMinYMid")
+        .call(resize);
+
+    window.addEventListener('resize', resize);
+    
+    // resize svg according to the size of the container
+    function resize() {
+        var targetWidth = parseInt(container.style("width"));
+        svg.attr("width", targetWidth);
+        svg.attr("height", Math.round(targetWidth / aspect));
+    }
+}
+</script>
+    
+	<script>
+
+// -----------------------Initial setup--------------------------------//
+
+// Setup size of svg/dimensions
+// Setup domain of x and y
+// Setup x and y axes
+// Create scatterSvg
+// Setup scatterplotTooltip
+// Setup SideBar
+// Setup dropdown menus & checkboxes
+
+
+
+// set/calculate variables for dimensions and margins of scatterplot
+var margin = {top: 60, right: 160, bottom: 78, left: 60},
+    width = window.innerWidth - margin.left - margin.right - 30,
+    height = window.innerHeight - margin.top - margin.bottom;
+
+// Initialize/Set the ranges of x and y axes
+var x = d3.scaleLinear().range([0, width]);
+var y = d3.scaleLinear().range([height, 0]);
+
+// Initialize x and y axes
+var xAxis = d3.axisBottom().scale(x)
+var yAxis = d3.axisLeft().scale(y)
+
+// scatterSvg create and setup + group element create/append that sets area to start in the corner with margins applied
+var scatterSvg = d3.select(".scatterDiv").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("color", "black")
+    .attr("style", "background-color: white")
+    .call(responsivefy)
+.append("g")
+    .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+let scatterplotTooltip = d3.select('.scatterDiv').append('div')
+    .attr('class', 'scatterplotTooltip')
+    .style("position", "absolute")
+    .style("opacity", 0)
+    .style("border", "1px solid black")
+    .style("padding", "5px")
+    .style("background-color", "white")
+    .style("cursor", "default")
+    .style("top", "0px")
+    .style("left", "50%")
+    .style("z-index", 1)
+
+// SideBar
+let scatterplotSideBar = d3.select('.scatterDiv').append('div')
+    .attr("class", "scatterplotSideBar")
+    .style("height", "100vh")
+    .style("border-left", "2px solid #929292")
+    .style("width", margin.right - 10 + "px")
+    .style("position", "absolute")
+    .style("top", "0px")
+    .style("right", "0px")
+    .style("background-color", "#ececec")
+
+d3.select(".scatterplotSideBar").append('p')
+    .style("text-align", "center")
+    .style("font-size", "25px")
+    .style("border-bottom", "1px solid black")
+    .style("padding-bottom", "5px")
+    .style("margin", "10px auto")
+    .text("Controls")
+
+// Variables section
+d3.select(".scatterplotSideBar").append('p')
+    .style("font-size", "18px")
+    .style("margin-left", "5px")
+    .style("margin-top", "15px")
+    .text("Variables")
+
+let yDropdownLabel = d3.select('.scatterplotSideBar').append('label')
+    .style("margin-left", "20px")
+    .text("Y Variable")
+
+let yDropdown = yDropdownLabel.append('select')
+    .attr("class", "yDropdown")
+    .style("display", "block")
+    .style("margin-left", "20px")
+    .style("margin-bottom", "7px")
+
+yDropdown.append('option')
+    .text("Base Total")
+    .attr("value", "base_total")
+
+yDropdown.append('option')
+    .text("Attack")
+    .attr("value", "attack")
+
+yDropdown.append('option')
+    .text("Defense")
+    .attr("value", "defense")
+
+yDropdown.append('option')
+    .text("Hp")
+    .attr("value", "hp")
+
+yDropdown.append('option')
+    .text("Sp Attack")
+    .attr("value", "sp_attack")
+
+yDropdown.append('option')
+    .text("Sp Defense")
+    .attr("value", "sp_defense")
+
+yDropdown.append('option')
+    .text("Speed")
+    .attr("value", "speed")
+
+let xDropdownLabel = d3.select('.scatterplotSideBar').append('label')
+    .text("X Variable")
+    .style("margin-left", "20px")
+
+let xDropdown = xDropdownLabel.append('select')
+    .attr("class", "xDropdown")
+    .style("display", "block")
+    .style("margin-left", "20px")
+
+xDropdown.append('option')
+    .text("Capture Rate")
+    .attr("value", "capture_rate")
+
+xDropdown.append('option')
+    .text("Weight Kg")
+    .attr("value", "weight_kg")
+
+xDropdown.append('option')
+    .text("Height M")
+    .attr("value", "height_m")
+
+// Filters section
+d3.select(".scatterplotSideBar").append('p')
+    .style("font-size", "18px")
+    .style("padding-top", "15px")
+    .style("padding-left", "5px")
+    .style("border-top", "1px solid black")
+    .text("Filters")
+
+let filterDropdownLabel = d3.select('.scatterplotSideBar').append('label')
+    .text("Type Filter")
+    .style("margin-left", "20px")
+
+let filtDropdown = filterDropdownLabel.append('select')
+    .attr("class", "filtDropdown")
+    .style("display", "block")
+    .style("margin-bottom", "7px")
+    .style("margin-left", "20px")
+
+filtDropdown.append('option')
+    .text("All")
+    .attr("value", "")
+
+filtDropdown.append('option')
+    .text("Bug")
+    .attr("value", "bug")
+
+filtDropdown.append('option')
+    .text("Dark")
+    .attr("value", "dark")
+
+filtDropdown.append('option')
+    .text("Dragon")
+    .attr("value", "dragon")
+
+filtDropdown.append('option')
+    .text("Electric")
+    .attr("value", "electric")
+
+filtDropdown.append('option')
+    .text("Fairy")
+    .attr("value", "fairy")
+
+filtDropdown.append('option')
+    .text("Fighting")
+    .attr("value", "fighting")
+
+filtDropdown.append('option')
+    .text("Fire")
+    .attr("value", "fire")
+
+filtDropdown.append('option')
+    .text("Flying")
+    .attr("value", "flying")
+
+filtDropdown.append('option')
+    .text("Ghost")
+    .attr("value", "ghost")
+
+filtDropdown.append('option')
+    .text("Grass")
+    .attr("value", "grass")
+
+filtDropdown.append('option')
+    .text("Ground")
+    .attr("value", "ground")
+
+filtDropdown.append('option')
+    .text("Ice")
+    .attr("value", "ice")
+
+filtDropdown.append('option')
+    .text("Normal")
+    .attr("value", "normal")
+
+filtDropdown.append('option')
+    .text("Poison")
+    .attr("value", "poison")
+
+filtDropdown.append('option')
+    .text("Psychic")
+    .attr("value", "psychic")
+
+filtDropdown.append('option')
+    .text("Rock")
+    .attr("value", "rock")
+
+filtDropdown.append('option')
+    .text("Steel")
+    .attr("value", "steel")
+
+filtDropdown.append('option')
+    .text("Water")
+    .attr("value", "water")
+
+let checkboxSingleLabel = d3.select('.scatterplotSideBar').append('label')
+    .text("Single-Type")
+    .style("margin-left", "20px")
+
+let checkboxSingleInput = checkboxSingleLabel.append('input')
+    .attr("type", "checkbox")
+    .attr("checked", "checked")
+    .attr("value", "dual")
+    .style("margin-left", "20px")
+    .style("margin-bottom", "7px")
+    .style("display", "block")
+
+let checkboxDualLabel = d3.select('.scatterplotSideBar').append('label')
+    .text("Dual-Type")
+    .style("margin-left", "20px")
+
+let checkboxDualInput = checkboxDualLabel.append('input')
+    .attr("type", "checkbox")
+    .attr("checked", "checked")
+    .attr("value", "dual")
+    .style("margin-left", "20px")
+    .style("margin-bottom", "7px")
+    .style("display", "block")
+
+</script>
+	<script>
+
+// ---------------------------d3.csv()--------------------------------//
+
+// Variable declarations and processing
+	// Format data
+	// y and x axis variable name declarations
+	// Other variable declarations
+	// defs/linearGradients/stops for coloring dots
+	// hide/hidehandler
+// Function declarations
+	// hslDarken
+	// y dropdown menu handler
+	// x dropdown menu handler
+	// checkbox handlers
+	// updateScatter function declaration
+		// Collect garbage
+		// Reset/Filter/Format/Create
+			// Reset tempData
+			// Filter tempData
+			// Domain setup
+			// Regression Line - declarations for vars/functions and creation of line
+			// Add rect for x axis
+			// Call varNameFormat() - define formatted variable names
+			// Call enterDots
+			// Add x and y axes
+			// Add grid
+			// Add x and y axes text
+			// Add scatterTitle and corresponding rect
+// Function declarations cont.
+	// varNameFormat declaration with tuple xAxisVarFormatted, yAxisVarFormatted declarations
+	// enterDots declaration
+	// exitDots declaration
+// Run initialization/function calls
+	// enterDots()
+
+
+
+// Get the data and process data within a large function
+d3.csv("/static/data/pokemon.csv").then(function(data) {
+
+// -----------------------Variable declarations and processing--------------------------------//
+
+	// format data from strings to numbers
+	data.forEach(function(d) {
+		d.capture_rate = +d.capture_rate;
+		d.base_total = +d.base_total;
+		d.attack = +d.attack;
+		d.defense = +d.defense;
+		d.hp = +d.hp;
+		d.sp_attack = +d.sp_attack;
+		d.sp_defense = +d.sp_defense;
+		d.speed = +d.speed;
+		d.height_m = +d.height_m;
+		d.weight_kg = +d.weight_kg;
+	});
+
+	let xAxisVar = "capture_rate"
+	let yAxisVar = "base_total"
+	let filtVar = ""
+	let filtSingDuelVar = ""
+
+	let tempData
+	let grid
+
+	// create defs, linear gradient, and stop elements with appropriate settings
+	var defs = scatterSvg.append("defs")
+	for (type1 in typeColors) {
+		for (type2 in typeColors) {
+			var linGrad = defs.append("linearGradient")
+				.attr("id", type1 + type2)
+				.attr("x1", 0)
+				.attr("x2", 1)
+				.attr("y1", 0)
+				.attr("y2", 1)
+
+			linGrad.append("stop")
+				.attr("offset", "0%")
+				.attr("stop-color", typeColors[type1])
+			
+			linGrad.append("stop")
+				.attr("offset", "100%")
+				.attr("stop-color", typeColors[type2])
+		}
+	}
+	for (type1 in typeColors) {
+		for (type2 in typeColors) {
+			var linGradDark = defs.append("linearGradient")
+				.attr("id", type1 + type2 + "dark")
+				.attr("x1", 0)
+				.attr("x2", 1)
+				.attr("y1", 0)
+				.attr("y2", 1)
+
+			linGradDark.append("stop")
+				.attr("offset", "0%")
+				.attr("stop-color", hslDarken(typeColors[type1]))
+			
+			linGradDark.append("stop")
+				.attr("offset", "100%")
+				.attr("stop-color", hslDarken(typeColors[type2]))
+		}
+	}
+
+	// set scatterplot Tooltip display to none once it is fully transparent for better user experience (fewer issues with hovering over where tooltip text was which causes cursor issues)
+	let hide = function() {scatterplotTooltip.style("display", "none")}
+	let hideHandler
+
+
+// -----------------------Function declarations--------------------------------//
+
+
+	// function to darken a point
+	function hslDarken(d) {
+		// check to see if data is an object or a color and split the color on comma
+		let tempArr
+		if (typeof d === "string") {
+			tempArr = d.split(",")
+		} else {
+			tempArr = typeColors[d.type1].split(",")
+		}
+
+		// darken light value from hsl color by 4%
+		let l = parseInt(tempArr[2].slice(0,-2)) - 4
+		tempArr[2] = l
+		tempArr[tempArr.length - 1] = tempArr[tempArr.length - 1] + "%)"
+
+		// stringify color from array back into hsl format
+		let tempColor = ""
+		for (elem in tempArr) {
+			tempColor += tempArr[elem] + ","
+		}
+		return tempColor.slice(0,-1)
+	}
+
+	// handles y Variable dropdown menu change
+	yDropdown.on("change", function() {
+		// update yAxisVar's value
+		let elem = document.querySelector(':focus')
+		if (elem) elem.blur()
+		yAxisVar = this.value
+		updateScatter(xAxisVar, yAxisVar, filtVar)
+	})
+
+	// handles x Variable dropdown menu change
+	xDropdown.on("change", function() {
+		// update xAxisVar's value
+		let elem = document.querySelector(':focus')
+		if (elem) elem.blur()
+		xAxisVar = this.value
+		updateScatter(xAxisVar, yAxisVar, filtVar)
+	})
+
+	// handles x Variable dropdown menu change
+	filtDropdown.on("change", function() {
+		// update which Pokemon type is displayed
+		let elem = document.querySelector(':focus')
+		if (elem) elem.blur()
+		filtVar = this.value
+		updateScatter(xAxisVar, yAxisVar, filtVar)
+	})
+
+	checkboxSingleInput.on("change", function() {
+		updateScatter(xAxisVar, yAxisVar, filtVar)
+	})
+	
+	checkboxDualInput.on("change", function() {
+		updateScatter(xAxisVar, yAxisVar, filtVar)
+	})
+
+	function updateScatter(xAxisVar, yAxisVar, filtVar, start=false) {
+
+		// reset tempData to be equal to data
+		tempData = data
+
+	// Filter according to type chosen from dropdown menu
+		if (filtVar === "") {
+			tempData = tempData
+		} else {
+			tempData = tempData.filter(function(d){ return d.type1 === filtVar || d.type2 === filtVar})
+		}
+	// Filter according to checkboxes for single and dual type
+		if (checkboxSingleInput.property("checked")) {
+			if (checkboxDualInput.property("checked")) {
+				// show both single and dual type Pokemon (default)
+				tempData = tempData
+				filtSingDuelVar = ""
+			} else {
+				// show only single type Pokemon
+				tempData = tempData.filter(function(d){ return d.type2 === ""})
+				filtSingDuelVar = "Single-Type"
+			}
+		} else {
+			if (checkboxDualInput.property("checked")) {
+				// show only dual type Pokemon
+				tempData = tempData.filter(function(d){ return d.type2 !== ""})
+				filtSingDuelVar = "Dual-Type"
+			} else {
+				// show no Pokemon
+				tempData = []
+				filtSingDuelVar = "No"
+			}
+		}
+
+	// Process data
+
+		// reset domain
+		x.domain([0, d3.max(tempData, function(d) { return d[xAxisVar]; })]).nice();
+		y.domain([d3.min(tempData, function(d) { return d[yAxisVar]; }), d3.max(tempData, function(d) { return d[yAxisVar]; })]).nice();
+
+		if (start) {
+		// Add grid
+		grid = scatterSvg.append("g")		
+			.attr("stroke", "currentColor")
+			.attr("stroke-opacity", 0)
+		.call(g => g.append("g")
+			.selectAll("line")
+			.data(x.ticks())
+			.join("line")
+				.attr("x1", d => 0.5 + x(d))
+				.attr("x2", d => 0.5 + x(d))
+				.attr("y1", 0)
+				.attr("y2", height)
+			.transition()
+			.duration(1500)
+				.attr("stroke-opacity", 0.1))
+		.call(g => g.append("g")
+			.selectAll("line")
+			.data(y.ticks())
+			.join("line")
+				.attr("y1", d => 0.5 + y(d))
+				.attr("y2", d => 0.5 + y(d))
+				.attr("x1", 0)
+				.attr("x2", width)
+			.transition()
+			.duration(1500)
+				.attr("stroke-opacity", 0.1))
+		} else {
+		grid.data([]).exit()
+		.transition()
+		.duration(1500)
+			.attr("stroke-opacity", 0)
+			.remove()
+		
+		grid = scatterSvg.append("g")		
+			.attr("stroke", "currentColor")
+			.attr("stroke-opacity", 0)
+		.call(g => g.append("g")
+			.selectAll("line")
+			.data(x.ticks())
+			.join("line")
+				.attr("x1", d => 0.5 + x(d))
+				.attr("x2", d => 0.5 + x(d))
+				.attr("y1", 0)
+				.attr("y2", height)
+			.transition()
+			.duration(1500)
+			.transition()
+			.duration(1500)
+				.attr("stroke-opacity", 0.1))
+		.call(g => g.append("g")
+			.selectAll("line")
+			.data(y.ticks())
+			.join("line")
+				.attr("y1", d => 0.5 + y(d))
+				.attr("y2", d => 0.5 + y(d))
+				.attr("x1", 0)
+				.attr("x2", width)
+			.transition()
+			.duration(1500)
+			.transition()
+			.duration(1500)
+				.attr("stroke-opacity", 0.1))
+		}
+
+
+	//---------------------Regression line-------------------//
+
+		let [regressionPoints, regressionLine] = computeRegLine()
+		if (start) {
+			initRegLine(regressionPoints, regressionLine)
+		} else {
+			updateRegLine(regressionPoints, regressionLine)
+		}
+
+
+
+
+
+		// format x and y axes for display in tooltips and axes
+		let [xAxisVarFormatted, yAxisVarFormatted, filtVarFormatted] = varNameFormat(xAxisVar, yAxisVar, filtVar)
+
+		// create all new dots with correct location
+		enterDots(tempData, xAxisVarFormatted, yAxisVarFormatted)
+
+
+		if (start) {
+			// Add x Axis
+			scatterSvg.append("g")
+				.attr("class", "xAxis")
+				.attr("transform", "translate(0," + height + ")")
+				.style("opacity", 0)
+			.transition()
+			.duration(4000)
+				.style("opacity", 1)
+				.call(xAxis)
+
+			// Add y Axis
+			scatterSvg.append("g")
+				.attr("class", "yAxis")
+				.style("opacity", 0)
+			.transition()
+			.duration(4000)
+				.style("opacity", 1)
+				.call(yAxis);
+		} else {
+			// Update x Axis
+			scatterSvg.select(".xAxis")
+				.transition()
+				.duration(5000)
+				.call(xAxis)
+
+			// Update y Axis
+			scatterSvg.select(".yAxis")
+				.transition()
+				.duration(5000)
+				.call(yAxis)
+		}
+
+		if (start) {
+			// Set x axis name
+			scatterSvg.append('text')
+				.attr("class", "xAxisName")
+				.attr('x', width / 2)
+				.attr('y', height + margin.bottom / 2)
+				.style('font-size', 20)
+				.style('text-anchor', 'middle')
+				.style("opacity", 0)
+			.transition()
+			.duration(4000)
+				.style("opacity", 1)
+				.text(xAxisVarFormatted)
+
+			// Set y axis name
+			scatterSvg.append('text')
+				.attr("class", "yAxisName")
+				.attr("transform", "rotate(-90)")
+				.attr('x', -height / 2)
+				.attr('y', -margin.left / 1.5)
+				.style('font-size', 20)
+				.style('text-anchor', 'middle')
+				.style("opacity", 0)
+			.transition()
+			.duration(4000)
+				.style("opacity", 1)
+				.text(yAxisVarFormatted)
+		} else {
+			// Update x axis name
+			d3.select(".xAxisName")
+				.transition()
+				.duration(1000)
+					.style("opacity", 0)
+				.transition()
+				.duration(1000)
+					.style("opacity", 1)
+					.text(xAxisVarFormatted)
+
+			// Update y axis name
+			d3.select(".yAxisName")
+				.transition()
+				.duration(1000)
+					.style("opacity", 0)
+				.transition()
+				.duration(1000)
+					.style("opacity", 1)
+					.text(yAxisVarFormatted)
+		}
+
+
+		if (start) {
+		// Set title of scatterplot
+		scatterSvg.append('text')
+			.attr("class", "scatterTitle")
+			.attr('x', width / 2)
+			.attr('y', -20)
+			.style('font-size', "1.5em")
+			.style('text-anchor', 'middle')
+			.style("opacity", 0)
+		.transition()
+		.duration(4000)
+			.style("opacity", 1)
+			.text(filtSingDuelVar + " " + filtVarFormatted + " Pokemon: " + yAxisVarFormatted + " vs. " + xAxisVarFormatted)
+		} else {
+		// Update title of scatterplot
+		d3.select(".scatterTitle")
+			.transition()
+			.duration(1000)
+				.style("opacity", 0)
+			.transition()
+			.duration(1000)
+				.style("opacity", 1)
+				.text(filtSingDuelVar + " " + filtVarFormatted + " Pokemon: " + yAxisVarFormatted + " vs. " + xAxisVarFormatted)
+		}
+
+	}
+
+
+//-------------------------Function declarations cont.-------------------------------//
+
+	// formatting x and y axis variables for displaying with Capitalized first letters and no underscores
+	function varNameFormat(xAxisVar, yAxisVar, filtVar) {
+		let filtVarFormatted = filtVar.charAt(0).toUpperCase() + filtVar.substring(1)
+		let tempArrX = xAxisVar.split("_")
+		let xAxisVarFormatted = tempArrX[0].charAt(0).toUpperCase() + tempArrX[0].substring(1) + " " + tempArrX[1].charAt(0).toUpperCase() + tempArrX[1].substring(1)
+		let tempArrY = yAxisVar.split("_")
+		let yAxisVarFormatted
+		if (tempArrY.length > 1) {
+			yAxisVarFormatted = tempArrY[0].charAt(0).toUpperCase() + tempArrY[0].substring(1) + " " + tempArrY[1].charAt(0).toUpperCase() + tempArrY[1].substring(1)
+			return [xAxisVarFormatted, yAxisVarFormatted, filtVarFormatted]
+		} else {
+			yAxisVarFormatted = tempArrY[0].charAt(0).toUpperCase() + tempArrY[0].substring(1)
+			return [xAxisVarFormatted, yAxisVarFormatted, filtVarFormatted]
+		}
+	}
+
+
+	// Compute Regression Line
+	function computeRegLine() {
+
+		linearRegression = ss.linearRegression(tempData.map(d => [d[xAxisVar], d[yAxisVar]]))
+
+		linearRegressionLine = ss.linearRegressionLine(linearRegression)
+
+		let firstX = d3.min(tempData, function(d) { return d[xAxisVar]; });
+		let lastX = d3.max(tempData, function(d) { return d[xAxisVar]; });
+		let xCoordinates = [firstX, lastX];
+
+		// these x and y keys coordinate with the line variable below
+		let regressionPoints = xCoordinates.map(d => ({
+			x: d,
+			y: linearRegressionLine(d)
+		}));
+
+		let yMax = d3.max(tempData, function(d) { return d[yAxisVar]; })
+
+		for (point of regressionPoints) {
+			if (point.y < 0) {
+				// y = mx + b
+				// m is slope
+				// b is intersect
+				// interpolate x value for y equal to 0 for regression line
+				// return new coordinates
+				point.y = linearRegression.b
+				point.x = 0
+				continue
+			}
+			if (point.y > yMax) {
+				// x = (y-b)/m
+				// interpolate x value for y at yMax value for regression line
+				point.y = yMax
+				point.x = (yMax - linearRegression.b)/linearRegression.m
+				continue
+			}
+		}
+
+		regressionLine = d3.line()
+			.x(d => x(d.x))
+			.y(d => y(d.y))
+
+		return [regressionPoints, regressionLine]
+	}
+
+	// Initialize/Create Regression Line
+	function initRegLine(regressionPoints, regressionLine) {
+		scatterSvg.append('path')
+			.classed('regressionLine', true)
+			.datum(regressionPoints)
+			.attr('d', regressionLine)
+			.attr('stroke', '#e44040')
+			.attr('stroke-width', 2)
+			.style('opacity', 0)
+			.transition()
+			.duration(7000)
+				.style("opacity", 1)
+	}
+
+	// Update Regression Line
+	function updateRegLine(regressionPoints, regressionLine) {
+
+		scatterSvg.select("path")
+			.classed('regressionLine', true)
+            .datum(regressionPoints)
+            .transition()
+            .duration(5000)
+            	.attr("d", regressionLine)
+	}
+
+
+	// Add all dots for the scatterplot
+	function enterDots(data, xAxisVarFormatted, yAxisVarFormatted) {
+		scatterSvg.selectAll("circle")
+			.data(data, d => d.name)
+		.join(
+		enter => enter.append("circle")
+			.on("mouseover", function(d, i) { // show it and update html
+				if (hideHandler) {
+					clearTimeout(hideHandler)
+				}
+
+				let html = "<span class='tooltiptext'>" + "<b>" + d.name + "</b>" + "<br/>" + xAxisVarFormatted + ": " + d[xAxisVar] + "<br/>" + yAxisVarFormatted + ": " + d[yAxisVar]
+
+				scatterplotTooltip.style("display", "block").html(html)
+					.transition()
+					.duration(500)
+					.style("opacity", .9);
+			})
+			.on("mousemove", function(d, i) {
+				let tempHeight = d3.select(".scatterplotTooltip").node().getBoundingClientRect().height
+				let tempWidth = d3.select(".scatterplotTooltip").node().getBoundingClientRect().width
+				console.log(tempHeight)
+				
+				scatterplotTooltip
+					.style("left", (d3.event.offsetX - (tempWidth / 2) - 0.5) + "px")
+					.style("top", (d3.event.offsetY - tempHeight - 12) + "px");
+			})
+			.on("mouseout", function(d, i) {
+				scatterplotTooltip.transition()
+					.duration(500)
+					.style("opacity", 0)
+
+				hideHandler = setTimeout(hide, 550)
+			})
+			.attr("r", 5)
+			.attr("cx", 0)
+			.attr("cy", height)
+			.attr("fill", function(d) {
+				if (d.type2 === "") {
+					return typeColors[d.type1]
+				}
+				return "url(#" + d.type1 + d.type2 + ")"
+			})
+			.attr("stroke", function(d) {
+				if (d.type2 === "") {
+					// color is in hsl format
+					return hslDarken(d)
+				}
+				return "url(#" + d.type1 + d.type2 + "dark)"
+			})
+		.call(enter => enter
+			.transition()
+			.duration(5000)
+			.attr("cx", function(d) { return x(d[xAxisVar]); })
+			.attr("cy", function(d) { return y(d[yAxisVar]); })
+			),
+		update => update
+		.call(update => update
+		.on("mouseover", function(d, i) { // show it and update html
+				if (hideHandler) {
+					clearTimeout(hideHandler)
+				}
+
+				let html = "<span class='tooltiptext'>" + "<b>" + d.name + "</b>" + "<br/>" + xAxisVarFormatted + ": " + d[xAxisVar] + "<br/>" + yAxisVarFormatted + ": " + d[yAxisVar]
+
+				scatterplotTooltip.style("display", "block").html(html)
+					.transition()
+					.duration(500)
+					.style("opacity", .9);
+			})
+			.on("mousemove", function(d, i) {
+				let tempHeight = d3.select(".scatterplotTooltip").node().getBoundingClientRect().height
+				let tempWidth = d3.select(".scatterplotTooltip").node().getBoundingClientRect().width
+				console.log(tempHeight)
+				
+				scatterplotTooltip
+					.style("left", (d3.event.offsetX - (tempWidth / 2) - 0.5) + "px")
+					.style("top", (d3.event.offsetY - tempHeight - 12) + "px");
+			})
+			.on("mouseout", function(d, i) {
+				scatterplotTooltip.transition()
+					.duration(500)
+					.style("opacity", 0)
+
+				hideHandler = setTimeout(hide, 550)
+			})
+			.transition()
+			.duration(5000)
+			.attr("cx", d => x(d[xAxisVar]))
+			.attr("cy", d => y(d[yAxisVar]))
+			),
+		exit => exit
+		.call(exit => exit
+			.transition()
+			.duration(5000)
+			.attr("cx", 0)
+			.attr("cy", height)
+			.remove()
+			)
+		)
+	}
+
+
+// -------------------Run initializations/Function calls------------------------//
+
+	// Initialize scatterplot once user has scrolled to the second page fully
+	let ticking = false
+	let scrollPos = 0
+
+	let scrollEvent = window.addEventListener("scroll", function(e) {
+		scrollPos = window.scrollY
+
+		if (!ticking) {
+			ticking = false;
+
+			if (scrollPos >= window.innerHeight) {
+				updateScatter(xAxisVar, yAxisVar, filtVar, start=true)
+				window.removeEventListener("scroll", scrollEvent)
+			ticking = true
+			}
+		}
+	})
+
+});
+</script>
+
+	<footer id="footer">
+		<div class="footerDiv">
+			<a href="#splash"><i class="up upToSplash"></i><i class="up upToSplash upDbl"></i></a>
+			<a href="#scatterDiv"><i class="up upToScatterDiv"></i></a>
+			<h2 class="footerh2">Thanks!</h2>
+			<p class="footerText">This project was created using D3.JS among other technologies. Thanks for looking.  I hope you had fun!</p>
+			<p class="footerText">Please see README.md file on this project's GitHub page to see a full list of sources used in developing this project: <a class="footerA" target="_blank" href="https://github.com/petefitton/CHARTizard">GitHub Repo</a></p>
+			<div class="footerImgDiv">
+				<img src="../static/img/footerImg.png" class="footerImg" alt="Charizard sneering while pointing at a bar chart that shows CHARTizard popularity increasing.">
+			</div>
+		</div>
+	</footer>
+</body>
+</html>

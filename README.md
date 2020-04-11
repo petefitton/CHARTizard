@@ -6,14 +6,31 @@ Live Website can be found here:
 
 # Technologies Used
 
-# General Approach to Project/Experience with it/Reflection
+The primary technology used in this project was D3.JS, a framework/library that manipulates the DOM.  This technology requires understanding its set of built-in methods in order to develop charts beyond something simple and static.
+
+I initially explored the dataset with Jupyter notebook scripts and tested serving the index.html file with a simple script that had been integrated into the project. I decided that the actual filtering and data manipulation would be more better handled with javacsript as that allowed me to focus more on learning D3 instead of spreading myself too thin with additional technologies/skills.
+
+The server was built with Flask. I have implemented a landing page that displays a warning for users who may have photosensitive epilepsy. This page allows user interaction to bring you to the main page of the site. I designed this page to be one long page with a splash page section, chart section, and footer.
+
+The frontend beyond D3 was built with basic HTML/CSS.
+
+
+# General Approach to Project/Reflection
+
+I originally intended to collaborate with a data scientist on this project; however, he got very sick around the time that I was beginning this project, so I had to reassess the handling of the data for this project.  I went ahead and spent some time exploring the data inside of a Jupyter notebook with Pandas and tested integrating some data processing inside of my flask server.  I decided that I would adjust my plan to process the data inside of the d3 files with Javascript rather than with Pandas and Python.
+
+I found learning D3 to be more difficult than I anticipated.  I knew that it had somewhat of a reputation for being hard to learn, but one particular challenge I faced was dealing with tutorials and examples written with D3 versions 3 and 4. Some parts of the code in those examples work with v5 of D3 (which is what I used), but oftentimes the specific part that I was looking for would not.  It did give me the opportunity to learn D3 a little bit more in depth as I would often seek out understanding from the documentation to see what methods/functionality were listed in v5 and learned more about those pieces as a result.
+
+I also spent a bit more time on the design of this website than on previous projects, specifically on animation.  I think the animations very quickly improved the quality of the user experience for this site.  I recognized as well that there would be a potential problem for those with photosensitive epilepsy, so I created a warning page on entry to the site.  I also specifically crafted the animations to be softer in order to mitigate potential seizures.
 
 # Installation instructions for dependencies
 
 
 
 
+
 # Sources
+
 -Splash Image: https://i.redd.it/gqnzk6788v411.png https://www.reddit.com/r/wimmelbilder/comments/8s55wz/pokemon_color_spectrum_featuring_all_pokemon_in/
 -Charizard Image: https://cdn.weasyl.com/static/media/52/67/7f/52677ffe59d86ec32b87cd11ea45ce45e15ec6fb855237776c922b45ac02214b.png
 
@@ -64,6 +81,7 @@ Live Website can be found here:
 -CSS Animation Documentation: https://drafts.csswg.org/css-animations/
 -Example of scrolling color gradient: https://codepen.io/nohoid/pen/kIfto
 -Seizure Warning example: https://en.wikipedia.org/wiki/Template:Seizure_warning
+-Force Landscope Mode on Mobile: https://stackoverflow.com/questions/14360581/force-landscape-orientation-mode
 
 
 # Chartizard Pitch
@@ -84,9 +102,9 @@ Single page website that displays beautiful, interactive charts concerning Pokem
 
 ### Proposed Architecture
 
-Charts built in D3: D3.JS framework/library will be used to manipulate the DOM to display all aspects of chart(s).  This technology is new to me and will take a large amount of time to learn and manipulate in ways that are aesthetically stellar.
+Chart built in D3: D3.JS framework/library will be used to manipulate the DOM to display all aspects of chart.  This technology is new to me and will take a large amount of time to learn and manipulate in ways that are aesthetically stellar.
 
-I will write Jupyter notebook scripts and integrate them with the server (refactoring to work within functions). I will be using this dataset:
+I will explore the dataset with Jupyter notebook scripts. I will perform actual filtering and data manipulation with javacsript and will be using this dataset:
 
 https://www.kaggle.com/rounakbanik/pokemon
 
