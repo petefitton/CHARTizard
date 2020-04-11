@@ -63,6 +63,7 @@ Live Website can be found here:
 -CSS Animation Documentation: https://www.w3schools.com/css/css3_animations.asp
 -CSS Animation Documentation: https://drafts.csswg.org/css-animations/
 -Example of scrolling color gradient: https://codepen.io/nohoid/pen/kIfto
+-Seizure Warning example: https://en.wikipedia.org/wiki/Template:Seizure_warning
 
 
 # Chartizard Pitch

@@ -253,6 +253,8 @@ h1 {
     position: absolute;
     transform: rotate(157deg) skewX(45deg) scaleY(0.7);
     -webkit-transform: rotate(157deg) skewX(45deg) scaleY(0.7);
+    -moz-transform: rotate(157deg) skewX(45deg) scaleY(0.7);
+    -o-transform: rotate(157deg) skewX(45deg) scaleY(0.7);
 }
 
 /* .line is used for test2 */
@@ -291,6 +293,157 @@ footer {
     text-align: center;
 }
 
+.footerh2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 3em;
+    margin: 0;
+    padding-top: 35px;
+}
+
+.footerA {
+    color: rgb(149, 103, 255);
+}
+
 .footerImg {
-    width: 50vw;
+    max-width: 50vw;
+    margin-top: 5vh;
+    max-height: inherit;
+}
+
+.footerImgDiv {
+    max-height: 35vh;
+}
+
+.footerDiv {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.up {
+    bottom: -112vh;
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    border: solid #e7e7e7;
+    border-width: 4px 4px 0px 0;
+    transform: rotate(-22deg) skewX(45deg) scaleY(0.7);
+    -webkit-transform: rotate(-22deg) skewX(45deg) scaleY(0.7);
+    -moz-transform: rotate(-22deg) skewX(45deg) scaleY(0.7);
+    -o-transform: rotate(-22deg) skewX(45deg) scaleY(0.7);
+    animation: up-arrow 4.5s linear infinite;
+    -webkit-animation: up-arrow 4.5s linear infinite;
+    -moz-animation: up-arrow 4.5s linear infinite;
+    -o-animation: up-arrow 4.5s linear infinite;
+    animation-delay: 30s;
+    -webkit-animation-delay: 30s;
+    -moz-animation-delay: 30s;
+    -o-animation-delay: 30s;
+}
+@keyframes up-arrow {
+    0% {bottom: -112vh}
+    20% {bottom: -115vh}
+    40% {bottom: -112vh}
+    42.5% {bottom: -111vh}
+    50% {bottom: -112vh}
+    70% {bottom: -115vh}
+    90% {bottom: -112vh}
+    92.5% {bottom: -111vh}
+    100% {bottom: -112vh}
+}
+@-webkit-keyframes up-arrow {
+    0% {bottom: -112vh}
+    20% {bottom: -115vh}
+    40% {bottom: -112vh}
+    42.5% {bottom: -111vh}
+    50% {bottom: -112vh}
+    70% {bottom: -115vh}
+    90% {bottom: -112vh}
+    92.5% {bottom: -111vh}
+    100% {bottom: -112vh}
+}
+@-moz-keyframes up-arrow {
+    0% {bottom: -112vh}
+    20% {bottom: -115vh}
+    40% {bottom: -112vh}
+    42.5% {bottom: -111vh}
+    50% {bottom: -112vh}
+    70% {bottom: -115vh}
+    90% {bottom: -112vh}
+    92.5% {bottom: -111vh}
+    100% {bottom: -112vh}
+}
+@-o-keyframes up-arrow {
+    0% {bottom: -112vh}
+    20% {bottom: -115vh}
+    40% {bottom: -112vh}
+    42.5% {bottom: -111vh}
+    50% {bottom: -112vh}
+    70% {bottom: -115vh}
+    90% {bottom: -112vh}
+    92.5% {bottom: -111vh}
+    100% {bottom: -112vh}
+}
+
+.upToScatterDiv {
+    left: 80%;
+}
+
+.upToSplash {
+    left: 20%;
+}
+
+.upDbl {
+    bottom: -115vh;
+    animation: up-dbl-arrow 4.5s linear infinite;
+    -webkit-animation: up-dbl-arrow 4.5s linear infinite;
+    -moz-animation: up-dbl-arrow 4.5s linear infinite;
+    -o-animation: up-dbl-arrow 4.5s linear infinite;
+    animation-delay: 30s;
+    -webkit-animation-delay: 30s;
+    -moz-animation-delay: 30s;
+    -o-animation-delay: 30s;
+}
+@keyframes up-dbl-arrow {
+    0% {bottom: -115vh}
+    20% {bottom: -118vh}
+    40% {bottom: -115vh}
+    42.5% {bottom: -114vh}
+    50% {bottom: -115vh}
+    70% {bottom: -118vh}
+    90% {bottom: -115vh}
+    92.5% {bottom: -114vh}
+    100% {bottom: -115vh}
+}
+@-webkit-keyframes up-dbl-arrow {
+    0% {bottom: -115vh}
+    20% {bottom: -118vh}
+    40% {bottom: -115vh}
+    42.5% {bottom: -114vh}
+    50% {bottom: -115vh}
+    70% {bottom: -118vh}
+    90% {bottom: -115vh}
+    92.5% {bottom: -114vh}
+    100% {bottom: -115vh}
+}
+@-moz-keyframes up-dbl-arrow {
+    0% {bottom: -115vh}
+    20% {bottom: -118vh}
+    40% {bottom: -115vh}
+    42.5% {bottom: -114vh}
+    50% {bottom: -115vh}
+    70% {bottom: -118vh}
+    90% {bottom: -115vh}
+    92.5% {bottom: -114vh}
+    100% {bottom: -115vh}
+}
+@-o-keyframes up-dbl-arrow {
+    0% {bottom: -115vh}
+    20% {bottom: -118vh}
+    40% {bottom: -115vh}
+    42.5% {bottom: -114vh}
+    50% {bottom: -115vh}
+    70% {bottom: -118vh}
+    90% {bottom: -115vh}
+    92.5% {bottom: -114vh}
+    100% {bottom: -115vh}
 }

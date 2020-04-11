@@ -10,25 +10,19 @@
 	<script src='https://unpkg.com/simple-statistics@7.0.8/dist/simple-statistics.min.js'></script>
 </head>
 <body>
-	<div class="splash">
+	<div class="splash" id="splash">
 		<div class="backgroundImg"></div>
 		<div class="headerBoxContainer">
 			<div class="headerBox">
 				<h1 class="headerh1">CHARTizard</h1>
 			</div>
 		</div>
-		<a href="#scatterDiv"><i class="arrow down toSecondPage"></i></a>
+		<a href="#scatterDiv"><i class="down toSecondPage"></i></a>
 	</div>
 	<div class="secondPage">
 		<div class="scatterDiv" id="scatterDiv"></div>
-		<a href="#footer"><i class="arrow down toFooter"></i></a>
+		<a href="#footer"><i class="down toFooter"></i></a>
 	</div>
-	<!-- <div class="scatterDiv2"></div> -->
-    <!-- <p>{{data.name[0]}}</p>
-    <p>{{data.capture_rate[0]}}</p>
-    <p>{{data.base_total[0]}}</p>
-    <p>{{dat.name[0]}}</p>
-	<p>{{dat.base_total[0]}}</p> -->
 	
 	{% include "typeColors.html" %}
 
@@ -36,20 +30,17 @@
     
 	{% include "scatterplotInitial.html" %}
 	{% include "scatterplotCSV.html" %}
-	
-    <!-- {% include "scatterplot2.html" %} -->
 
-
-
-    <!-- {% include "uhtest.html" %} -->
-    <!-- {% include "tester.html" %} -->
-
-    <!-- <div id="my_dataviz"></div> -->
-	<!-- <script src="../static/js/test.js"></script> -->
 	<footer id="footer">
-		<h1 class="footerh1">FOOTER</h1>
-		<div class="imgContainer">
-			<img src="../static/img/footerImg.png" class="footerImg">
+		<div class="footerDiv">
+			<a href="#splash"><i class="up upToSplash"></i><i class="up upToSplash upDbl"></i></a>
+			<a href="#scatterDiv"><i class="up upToScatterDiv"></i></a>
+			<h2 class="footerh2">Thanks!</h2>
+			<p class="footerText">This project was created using D3.JS among other technologies. Thanks for looking.  I hope you had fun!</p>
+			<p class="footerText">Please see README.md file on this project's GitHub page to see a full list of sources used in developing this project: <a class="footerA" target="_blank" href="https://github.com/petefitton/CHARTizard">GitHub Repo</a></p>
+			<div class="footerImgDiv">
+				<img src="../static/img/footerImg.png" class="footerImg">
+			</div>
 		</div>
 	</footer>
 </body>
