@@ -64,10 +64,10 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	let grid
 
 	// create defs, linear gradient, and stop elements with appropriate settings
-	var defs = scatterSvg.append("defs")
+	let defs = scatterSvg.append("defs")
 	for (type1 in typeColors) {
 		for (type2 in typeColors) {
-			var linGrad = defs.append("linearGradient")
+			let linGrad = defs.append("linearGradient")
 				.attr("id", type1 + type2)
 				.attr("x1", 0)
 				.attr("x2", 1)
@@ -85,7 +85,7 @@ d3.csv("{{url_for('static', filename='data/pokemon.csv')}}").then(function(data)
 	}
 	for (type1 in typeColors) {
 		for (type2 in typeColors) {
-			var linGradDark = defs.append("linearGradient")
+			let linGradDark = defs.append("linearGradient")
 				.attr("id", type1 + type2 + "dark")
 				.attr("x1", 0)
 				.attr("x2", 1)
