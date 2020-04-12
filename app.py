@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 from flask_frozen import Freezer
-# from myapplication import app
 
 app = Flask(__name__)
 
