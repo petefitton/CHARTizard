@@ -5,24 +5,24 @@
 function responsivefy(svg) {
     
 	// set the container's width & height equal to the SVG width & height
-    var container = d3.select(svg.node().parentNode),
+    let container = d3.select(svg.node().parentNode),
         width = parseInt(svg.style("width")),
         height = parseInt(svg.style("height")),
-        aspect = width / height;
+        aspect = width / height
 
 	// assign values for viewBox and preserveAspectRatio properties
     // call resize so that svg resizes on inital page load
     svg.attr("viewBox", "0 0 " + width + " " + height)
         .attr("perserveAspectRatio", "xMinYMid")
-        .call(resize);
+        .call(resize)
 
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize)
     
     // resize svg according to the size of the container
     function resize() {
-        var targetWidth = parseInt(container.style("width"));
-        svg.attr("width", targetWidth);
-        svg.attr("height", Math.round(targetWidth / aspect));
+        let targetWidth = parseInt(container.style("width"))
+        svg.attr("width", targetWidth)
+        svg.attr("height", Math.round(targetWidth / aspect))
     }
 }
 </script>

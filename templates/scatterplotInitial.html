@@ -13,20 +13,20 @@
 
 
 // set/calculate variables for dimensions and margins of scatterplot
-var margin = {top: 60, right: 160, bottom: 78, left: 60},
+let margin = {top: 60, right: 160, bottom: 82, left: 60},
     width = window.innerWidth - margin.left - margin.right - 30,
     height = window.innerHeight - margin.top - margin.bottom;
 
 // Initialize/Set the ranges of x and y axes
-var x = d3.scaleLinear().range([0, width]);
-var y = d3.scaleLinear().range([height, 0]);
+let x = d3.scaleLinear().range([0, width]);
+let y = d3.scaleLinear().range([height, 0]);
 
 // Initialize x and y axes
-var xAxis = d3.axisBottom().scale(x)
-var yAxis = d3.axisLeft().scale(y)
+let xAxis = d3.axisBottom().scale(x)
+let yAxis = d3.axisLeft().scale(y)
 
 // scatterSvg create and setup + group element create/append that sets area to start in the corner with margins applied
-var scatterSvg = d3.select(".scatterDiv").append("svg")
+let scatterSvg = d3.select(".scatterDiv").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .attr("color", "black")
@@ -61,7 +61,8 @@ let scatterplotSideBar = d3.select('.scatterDiv').append('div')
 
 d3.select(".scatterplotSideBar").append('p')
     .style("text-align", "center")
-    .style("font-size", "25px")
+    .style("font-size", "1.7em")
+    .style('font-family', "'Domine', serif")
     .style("border-bottom", "1px solid black")
     .style("padding-bottom", "5px")
     .style("margin", "10px auto")
@@ -69,7 +70,7 @@ d3.select(".scatterplotSideBar").append('p')
 
 // Variables section
 d3.select(".scatterplotSideBar").append('p')
-    .style("font-size", "18px")
+    .style("font-size", "1em")
     .style("margin-left", "5px")
     .style("margin-top", "15px")
     .text("Variables")
@@ -135,7 +136,7 @@ xDropdown.append('option')
 
 // Filters section
 d3.select(".scatterplotSideBar").append('p')
-    .style("font-size", "18px")
+    .style("font-size", "1em")
     .style("padding-top", "15px")
     .style("padding-left", "5px")
     .style("border-top", "1px solid black")

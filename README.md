@@ -14,6 +14,8 @@ The server was built with Flask. I have implemented a landing page that displays
 
 The frontend beyond D3 was built with basic HTML/CSS.
 
+I also used Photosensitive Epilepsy Analysis Tool to test for the potential to trigger photosensitive epilepsy episodes.  The analysis showed that the site is used, but I opted to continue displaying a warning to be extra careful.  The tool is available for free here: https://trace.umd.edu/peat
+
 
 # General Approach to Project/Reflection
 
@@ -21,12 +23,12 @@ I originally intended to collaborate with a data scientist on this project; howe
 
 I found learning D3 to be more difficult than I anticipated.  I knew that it had somewhat of a reputation for being hard to learn, but one particular challenge I faced was dealing with tutorials and examples written with D3 versions 3 and 4. Some parts of the code in those examples work with v5 of D3 (which is what I used), but oftentimes the specific part that I was looking for would not.  It did give me the opportunity to learn D3 a little bit more in depth as I would often seek out understanding from the documentation to see what methods/functionality were listed in v5 and learned more about those pieces as a result.
 
-I also spent a bit more time on the design of this website than on previous projects, specifically on animation.  I think the animations very quickly improved the quality of the user experience for this site.  I recognized as well that there would be a potential problem for those with photosensitive epilepsy, so I created a warning page on entry to the site.  I also specifically crafted the animations to be softer in order to mitigate potential seizures.
+I also spent a bit more time on the design of this website than on previous projects, specifically on animation.  I think the animations very quickly improved the quality of the user experience for this site.  I recognized as well that there would be a potential problem for those with photosensitive epilepsy, so I created a warning page on entry to the site.  I also specifically crafted the animations to be softer in order to mitigate potential seizures.  I used PEAT to test the website and confirmed that the site should be safe to use in that regard.
 
-# Installation instructions for dependencies
+# Dependencies
 
-
-
+See requirements.txt file for pip modules needed to run this project
+See also runtime.txt file for version of python3 used in deployment
 
 
 # Sources
@@ -83,6 +85,9 @@ I also spent a bit more time on the design of this website than on previous proj
 -Seizure Warning example: https://en.wikipedia.org/wiki/Template:Seizure_warning
 -Force Landscope Mode on Mobile: https://stackoverflow.com/questions/14360581/force-landscape-orientation-mode
 -Frozen Flask Deployment Issue: https://www.reddit.com/r/flask/comments/335cyi/a_problem_with_frozenflask/
+-Simple Deployment Ex with Flask, Frozen-Flask, and Netlify: https://medium.com/@francescaguiducci/how-to-build-a-simple-personal-website-with-python-flask-and-netlify-d800c97c283d
+-PEAT: https://trace.umd.edu/peat
+
 
 # Chartizard Pitch
 ----
@@ -115,4 +120,4 @@ Frontend built in HTML/CSS: no real need for complicated styling as charts will 
 ### MVP (working list for in class)
  - Single web page that displays one interactive, beautiful chart
  - Mobile First design
- - Stretch goals include creating a second and third chart
+ - Stretch goals include creating a second chart

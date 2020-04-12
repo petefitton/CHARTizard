@@ -8,7 +8,7 @@ html {
     color: white;
     margin: 0 auto;
     text-align: center;
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Domine', serif;
     margin-bottom: 10px
 }
 
@@ -49,7 +49,7 @@ body {
 }
 
 h1 {
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Domine', serif;
     font-size: 120px;
     margin: 0 auto;
     padding-top: 5px;
@@ -178,7 +178,8 @@ h1 {
 }
 
 .toSecondPage {
-    left: 48%;
+    left: 50%;
+    margin-left: -34px;
     bottom: 56px;
     margin-bottom: -38px;
     width: 68px;
@@ -241,10 +242,11 @@ h1 {
 }
 
 .toFooter {
-    bottom: -100vh;
-    left: 48%;
-    width: 35px;
-    height: 35px;
+    bottom: -99.5vh;
+    left: 50%;
+    margin-left: -18px;
+    width: 27px;
+    height: 27px;
     border: solid #474747;
     border-width: 4px 4px 0px 0;
 }
@@ -288,35 +290,49 @@ svg {
 footer {
     width: 100vw;
     height: 100vh;
-    background-color: black;
+    background-color: #464f5d;
     color: white;
     text-align: center;
 }
 
 .footerh2 {
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Domine', serif;
     font-size: 3em;
     margin: 0;
     padding-top: 35px;
 }
 
 .footerA {
-    color: rgb(149, 103, 255);
+    color: #b3d1ff;
 }
 
 .footerImg {
-    max-width: 50vw;
+    /* max-width: 50vw; */
     margin-top: 5vh;
-    max-height: inherit;
+    /* max-height: inherit; */
+    position: absolute;
+    bottom: 0;
+    /* left: 0; */
+    max-height: 100%;
+    max-width: 100%;
+    padding-bottom: 10px;
 }
 
 .footerImgDiv {
-    max-height: 35vh;
+    /* max-height: 35vh; */
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .footerDiv {
     max-width: 500px;
     margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .up {
@@ -341,46 +357,46 @@ footer {
 }
 @keyframes up-arrow {
     0% {bottom: -112vh}
-    20% {bottom: -115vh}
+    25% {bottom: -112.5vh}
     40% {bottom: -112vh}
-    42.5% {bottom: -111vh}
+    42.5% {bottom: -111.75vh}
     50% {bottom: -112vh}
-    70% {bottom: -115vh}
+    70% {bottom: -112.5vh}
     90% {bottom: -112vh}
-    92.5% {bottom: -111vh}
+    92.5% {bottom: -111.75vh}
     100% {bottom: -112vh}
 }
 @-webkit-keyframes up-arrow {
     0% {bottom: -112vh}
-    20% {bottom: -115vh}
+    25% {bottom: -112.5vh}
     40% {bottom: -112vh}
-    42.5% {bottom: -111vh}
+    42.5% {bottom: -111.75vh}
     50% {bottom: -112vh}
-    70% {bottom: -115vh}
+    70% {bottom: -112.5vh}
     90% {bottom: -112vh}
-    92.5% {bottom: -111vh}
+    92.5% {bottom: -111.75vh}
     100% {bottom: -112vh}
 }
 @-moz-keyframes up-arrow {
     0% {bottom: -112vh}
-    20% {bottom: -115vh}
+    25% {bottom: -112.5vh}
     40% {bottom: -112vh}
-    42.5% {bottom: -111vh}
+    42.5% {bottom: -111.75vh}
     50% {bottom: -112vh}
-    70% {bottom: -115vh}
+    70% {bottom: -112.5vh}
     90% {bottom: -112vh}
-    92.5% {bottom: -111vh}
+    92.5% {bottom: -111.75vh}
     100% {bottom: -112vh}
 }
 @-o-keyframes up-arrow {
     0% {bottom: -112vh}
-    20% {bottom: -115vh}
+    25% {bottom: -112.5vh}
     40% {bottom: -112vh}
-    42.5% {bottom: -111vh}
+    42.5% {bottom: -111.75vh}
     50% {bottom: -112vh}
-    70% {bottom: -115vh}
+    70% {bottom: -112.5vh}
     90% {bottom: -112vh}
-    92.5% {bottom: -111vh}
+    92.5% {bottom: -111.75vh}
     100% {bottom: -112vh}
 }
 
@@ -405,45 +421,45 @@ footer {
 }
 @keyframes up-dbl-arrow {
     0% {bottom: -115vh}
-    20% {bottom: -118vh}
+    20% {bottom: -115.5vh}
     40% {bottom: -115vh}
-    42.5% {bottom: -114vh}
+    42.5% {bottom: -114.75vh}
     50% {bottom: -115vh}
-    70% {bottom: -118vh}
+    70% {bottom: -115.5vh}
     90% {bottom: -115vh}
-    92.5% {bottom: -114vh}
+    92.5% {bottom: -114.75vh}
     100% {bottom: -115vh}
 }
 @-webkit-keyframes up-dbl-arrow {
     0% {bottom: -115vh}
-    20% {bottom: -118vh}
+    20% {bottom: -115.5vh}
     40% {bottom: -115vh}
-    42.5% {bottom: -114vh}
+    42.5% {bottom: -114.75vh}
     50% {bottom: -115vh}
-    70% {bottom: -118vh}
+    70% {bottom: -115.5vh}
     90% {bottom: -115vh}
-    92.5% {bottom: -114vh}
+    92.5% {bottom: -114.75vh}
     100% {bottom: -115vh}
 }
 @-moz-keyframes up-dbl-arrow {
     0% {bottom: -115vh}
-    20% {bottom: -118vh}
+    20% {bottom: -115.5vh}
     40% {bottom: -115vh}
-    42.5% {bottom: -114vh}
+    42.5% {bottom: -114.75vh}
     50% {bottom: -115vh}
-    70% {bottom: -118vh}
+    70% {bottom: -115.5vh}
     90% {bottom: -115vh}
-    92.5% {bottom: -114vh}
+    92.5% {bottom: -114.75vh}
     100% {bottom: -115vh}
 }
 @-o-keyframes up-dbl-arrow {
     0% {bottom: -115vh}
-    20% {bottom: -118vh}
+    20% {bottom: -115.5vh}
     40% {bottom: -115vh}
-    42.5% {bottom: -114vh}
+    42.5% {bottom: -114.75vh}
     50% {bottom: -115vh}
-    70% {bottom: -118vh}
+    70% {bottom: -115.5vh}
     90% {bottom: -115vh}
-    92.5% {bottom: -114vh}
+    92.5% {bottom: -114.75vh}
     100% {bottom: -115vh}
 }
