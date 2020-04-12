@@ -4,6 +4,16 @@ Live Website can be found here:
 
 # Screenshots
 
+![Landing Page Screenshot](/img/screenshots/Landing.png)
+![Splash Page Screenshot](/img/screenshots/Splash.png)
+![Splash Page Screenshot](/img/screenshots/Splash2.png)
+![Chart Screenshot](/img/screenshots/Chart.png)
+![Chart Screenshot](/img/screenshots/Chart2.png)
+![Chart Screenshot](/img/screenshots/Chart3.png)
+![Chart Screenshot](/img/screenshots/Chart4.png)
+![Footer Screenshot](/img/screenshots/Footer.png)
+
+
 # Technologies Used
 
 The primary technology used in this project was D3.JS, a framework/library that manipulates the DOM.  This technology requires understanding its set of built-in methods in order to develop charts beyond something simple and static.
