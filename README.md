@@ -1,6 +1,6 @@
 # Deployed Website
 
-Live Website can be found here:
+Live Website can be found here: http://chartizard.netlify.com/
 
 # Screenshots
 
